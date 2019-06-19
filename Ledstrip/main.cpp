@@ -1,6 +1,4 @@
 #include <hwlib.hpp>
-#include "HCSR04.h"
-namespace target = hwlib::target;
 
 //THIS FUNCTION IS MADE BY WOUTER VAN OOIJEN REPOSITORY WOVO/GODAFOSS
 static void __attribute__((noinline)) wait_busy( int32_t n ){
@@ -12,14 +10,15 @@ static void __attribute__((noinline)) wait_busy( int32_t n ){
    ); 
 }
 
-class w2812{
+class w2812led{
 private:
-    hwlib::pin_out& pin;
+    due::pin_out pin;
     hwlib::color rgbcolor;
     hwlib::color off = hwlib::color(0,0,0);
     bool pinoutarray[24];
+    bool pinoutarrayoff[24] = {0};
 public:
-    w2812(hwlib::pin_out& pin, hwlib::color & rgbcolor):
+    w2812led(due::pin_out pin, hwlib::color & rgbcolor):
     pin( pin ),
     rgbcolor( rgbcolor ){
         int minus;
@@ -43,19 +42,136 @@ public:
 
 
     void write(bool x){
-        bool pinoutarrayb[24] = {pinoutarray};
         if(x){
             for(int i = 0; i < 24; i++){
                 pin.write(1);
                 pin.flush();
                 wait_busy(1);
-                pin.write(pinoutarrayb[i]);
+                pin.write(pinoutarray[i]);
+                pin.flush();
+                wait_busy(15);
+                pin.write(0);
+                pin.flush();
+                wait_busy(5);
+            }
+        }else{
+            for(int i = 0; i < 24; i++){
+                pin.write(1);
+                pin.flush();
+                wait_busy(1);
+                pin.write(pinoutarrayoff[i]);
+                pin.flush();
+                wait_busy(15);
+                pin.write(0);
+                pin.flush();
+                wait_busy(5);
+            }
+        }
+        hwlib::wait_us(100);
+    }
+
+    void changecolor(hwlib::color rgbcolor, bool writebit = 1){
+        int minus;
+        uint8_t rgbvalue;
+        int colorcount = 0;
+        for(uint8_t x : {rgbcolor.green, rgbcolor.red, rgbcolor.blue}){
+            minus = 128;
+            rgbvalue = x;
+            for(int i = 0; i < 8; i++){
+                if(rgbvalue >= minus){
+                    rgbvalue -= minus;
+                    if(writebit){
+                        pinoutarray[colorcount] = (1);
+                    }else{
+                        pinoutarrayoff[colorcount] = (1);
+                    }
+                }else{
+                    if(writebit){
+                        pinoutarray[colorcount] = (0);
+                    }else{
+                        pinoutarrayoff[colorcount] = (0);
+                    }
+                }
+                minus = minus/2;
+                colorcount++;
+            }
+        }
+    }
+
+    void blink(int ms, int  times){
+        for(int i; i < times; i++){
+            write(1);
+            hwlib::wait_ms(ms);
+            write(0);
+            hwlib::wait_ms(ms);
+        }
+    }
+};
+
+struct structw2812{
+    hwlib::color on = hwlib::color(255,255,255);
+    hwlib::color off = hwlib::color(0,0,0);
+    structw2812(hwlib::color on = hwlib::color(255,255,255), hwlib::color off = hwlib::color(0,0,0)):
+    on(on),
+    off(off){}
+};
+
+class ledstrip_array{
+private:
+    due::pin_out pin;
+    int totalleds;
+    structw2812 leds[120];
+
+    bool* makearray(const hwlib::color & rgbcolor, bool pinoutarray[24] = {}){
+        int minus;
+        uint8_t rgbvalue;
+        int colorcount = 0;
+            for(uint8_t x : {rgbcolor.green, rgbcolor.red, rgbcolor.blue}){
+                minus = 128;
+                rgbvalue = x;
+                for(int i = 0; i < 8; i++){
+                    if(rgbvalue >= minus){
+                        rgbvalue -= minus;
+                        pinoutarray[colorcount] = (1);
+                    }else{
+                        pinoutarray[colorcount] = (0);
+                    }
+                    minus = minus/2;
+                    colorcount++;
+                }
+            }
+        return pinoutarray;
+    }
+
+public:
+    ledstrip_array(due::pin_out pin, int totalleds):
+    pin( pin ),
+    totalleds(totalleds)
+    {}
+
+    void write(bool x){
+        for(int i=0; i < totalleds; i++){
+            bool pinoutarray[24];
+            if(x){
+                makearray(leds[i].on, pinoutarray);
+            }else{
+                makearray(leds[i].off, pinoutarray);
+            }
+            for(int i = 0; i < 24; i++){
+                pin.write(1);
+                pin.flush();
+                wait_busy(1);
+                pin.write(pinoutarray[i]);
                 pin.flush();
                 wait_busy(10);
                 pin.write(0);
                 pin.flush();
             }
         }
+    }
+
+    void changeled(int led, structw2812 rgbstruct){
+        leds[led] = rgbstruct;
     }
 };
 
@@ -210,16 +326,28 @@ public:
 
 int main(void){
     hwlib::wait_ms(1000);
-    auto pin = hwlib::target::pin_out( hwlib::target::pins::d6 );
+    due::pin_out pin = due::pin_out( due::pins::d6 );
     ledstrip leds(pin, 60);
     hwlib::color wit(255,255,255);
     hwlib::color rood(255,0,0);
     hwlib::color groen(0,255,0);
     hwlib::color blauw(0,0,255);
     hwlib::color uit(0,0,0);
-    w2812 ledje(pin, blauw);
-    for(;;){
-        ledje.write(1);
+    structw2812 groenrood(groen,rood);
+    structw2812 roodgroen(rood, groen);
+    // groenrood.on = groen;
+    // groenrood.off = rood;
+    ledstrip_array ledjes(pin, 60);
+    for(int i = 0; i < 60; i = i+2){
+        ledjes.changeled(i, groenrood);
     }
-    
+    for(int i = 1; i < 60; i = i+2){
+        ledjes.changeled(i, roodgroen);
+    }
+    for(;;){
+        hwlib::wait_ms(300);
+        ledjes.write(1);
+        hwlib::wait_ms(300);
+        ledjes.write(0);
+    }
 }
