@@ -173,6 +173,32 @@ public:
     void changeled(int led, structw2812 rgbstruct){
         leds[led] = rgbstruct;
     }
+    //Example: The first 10 leds: changegroupled(1,10) Beginning at led 1 ending at led 10
+    void changegroupled(int beginled, int endled, structw2812 rgbstruct){
+        for(int i = beginled-1; i < endled; i++){
+            leds[i] = rgbstruct;
+        }
+    }
+
+    void shiftforward(int times = 1){
+        for(int j = 0; j < times; j++){
+            structw2812 buffer = leds[totalleds-1];
+            for(int i = totalleds-1; i > 0; i--){
+                leds[i] = leds[i-1];
+            }
+            leds[0] = buffer;
+        }
+    }
+
+    void shiftback(int times = 1){
+        for(int j = 0; j < times; j++){
+            structw2812 buffer = leds[0];
+            for(int i = 0; i < totalleds-1; i++){
+                leds[i] = leds[i+1];
+            }
+            leds[totalleds-1] = buffer;
+        }
+    }
 };
 
 class ledstrip{
@@ -338,16 +364,26 @@ int main(void){
     // groenrood.on = groen;
     // groenrood.off = rood;
     ledstrip_array ledjes(pin, 60);
-    for(int i = 0; i < 60; i = i+2){
-        ledjes.changeled(i, groenrood);
-    }
-    for(int i = 1; i < 60; i = i+2){
-        ledjes.changeled(i, roodgroen);
-    }
+    ledjes.changegroupled(2,60, groenrood);
+    ledjes.changegroupled(3,6,roodgroen);
     for(;;){
-        hwlib::wait_ms(300);
-        ledjes.write(1);
-        hwlib::wait_ms(300);
-        ledjes.write(0);
+        for(int i = 0; i < 256; i++){
+            structw2812 rainbow(hwlib::color(255-i,i,0));
+            hwlib::wait_us(5000);
+            ledjes.changeled(0, rainbow);
+            ledjes.write(1);
+        }
+        for(int i = 0; i < 256; i++){
+            structw2812 rainbow(hwlib::color(0,255-i,i));
+            hwlib::wait_us(5000); 
+            ledjes.changeled(0, rainbow);
+            ledjes.write(1);
+        }
+        for(int i = 0; i < 256; i++){
+            structw2812 rainbow(hwlib::color(i,0,255-i));
+            hwlib::wait_us(5000); 
+            ledjes.changeled(0, rainbow);
+            ledjes.write(1);
+        }
     }
 }
