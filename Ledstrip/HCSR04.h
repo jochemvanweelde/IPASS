@@ -6,7 +6,7 @@
 #ifndef HCSR04_H
 #define HCSR04_H
 
-#include "Arduino.h"
+#include "/home/jvwer/Downloads/arduino-1.8.9-linux64/arduino-1.8.9/hardware/arduino/avr/cores/arduino/Arduino.h"
 
 class UltraSonicDistanceSensor {
  public:

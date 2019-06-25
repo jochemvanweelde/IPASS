@@ -3,7 +3,7 @@
   Created by Martin Sosic, June 11, 2016.
 */
 
-#include "Arduino.h"
+#include "/home/jvwer/Downloads/arduino-1.8.9-linux64/arduino-1.8.9/hardware/arduino/avr/cores/arduino/Arduino.h"
 #include "HCSR04.h"
 
 UltraSonicDistanceSensor::UltraSonicDistanceSensor(

@@ -1,389 +1,251 @@
 #include <hwlib.hpp>
+#include "simonlib.hpp"
 
-//THIS FUNCTION IS MADE BY WOUTER VAN OOIJEN REPOSITORY WOVO/GODAFOSS
-static void __attribute__((noinline)) wait_busy( int32_t n ){
-   __asm volatile(                  
-      "   .align 4           \t\n"  
-      "1: subs.w  r0, #3     \t\n"  
-      "   bgt 1b             \t\n"  
-      : : "r" ( n )          // uses (reads) n         
-   ); 
+
+
+void showcolor(bool bgreen, bool bred, bool byellow, bool bblue, due::pin_out ledstrippin){
+    structw2812 green(hwlib::color(0,255,0));
+    structw2812 red(hwlib::color(255,0,0));
+    structw2812 yellow(hwlib::color(255,255,0));
+    structw2812 blue(hwlib::color(0,0,255));
+    structw2812 black(hwlib::color(0,0,0));
+    ledstrip_array ledstripje(ledstrippin, 60);
+    ledstripje.changegroupled(1,60,black);
+    if(bgreen){ledstripje.changegroupled(1,15,green);}
+    if(bred){ledstripje.changegroupled(16,30,red);}
+    if(byellow){ledstripje.changegroupled(31,45,yellow);}
+    if(bblue){ledstripje.changegroupled(46,60,blue);}
+    ledstripje.write(1);
+    hwlib::wait_ms(400);
+    ledstripje.write(0);
 }
 
-class w2812led{
-private:
-    due::pin_out pin;
-    hwlib::color rgbcolor;
-    hwlib::color off = hwlib::color(0,0,0);
-    bool pinoutarray[24];
-    bool pinoutarrayoff[24] = {0};
-public:
-    w2812led(due::pin_out pin, hwlib::color & rgbcolor):
-    pin( pin ),
-    rgbcolor( rgbcolor ){
-        int minus;
-        uint8_t rgbvalue;
-        int colorcount = 0;
-        for(uint8_t x : {rgbcolor.green, rgbcolor.red, rgbcolor.blue}){
-            minus = 128;
-            rgbvalue = x;
-            for(int i = 0; i < 8; i++){
-                if(rgbvalue >= minus){
-                    rgbvalue -= minus;
-                    pinoutarray[colorcount] = (1);
-                }else{
-                    pinoutarray[colorcount] = (0);
-                }
-                minus = minus/2;
-                colorcount++;
-            }
+//duration in miliseconds
+bool checkcolor(int duration, int color, due::pin_out ledstrippin, int endwait = 50){
+    due::pin_out sensorGreenOut = due::pin_out( due::pins::d3 );
+    due::pin_out sensorRedOut = due::pin_out( due::pins::d11 );
+    due::pin_out sensorYellowOut = due::pin_out( due::pins::d8 );
+    due::pin_out sensorBlueOut = due::pin_out( due::pins::d4 );
+
+    due::pin_in sensorGreenIn = due::pin_in( due::pins::d2 );
+    due::pin_in sensorRedIn = due::pin_in( due::pins::d10 );
+    due::pin_in sensorYellowIn = due::pin_in( due::pins::d9 );
+    due::pin_in sensorBlueIn = due::pin_in( due::pins::d5 );
+
+    int distance = 1000;
+    int getcolor = -1;
+    for(int i = 0; i < duration; i++){
+        if(getafstand(sensorGreenOut, sensorGreenIn) < distance){
+            showcolor(1, 0, 0, 0, ledstrippin);
+            //hwlib::cout << "Goed! groen\n";
+            getcolor = 1;
+            break;
+        }
+        else if(getafstand(sensorRedOut, sensorRedIn) < distance){
+            showcolor(0, 1, 0, 0, ledstrippin);
+            //hwlib::cout << "Goed! rood\n";
+            getcolor = 2;
+            break;
+        }
+        else if(getafstand(sensorYellowOut, sensorYellowIn) < distance){
+            showcolor(0, 0, 1, 0, ledstrippin);
+            //hwlib::cout << "Goed! geel\n";
+            getcolor = 3;
+            break;
+        }
+        else if(getafstand(sensorBlueOut, sensorBlueIn) < distance){
+            showcolor(0, 0, 0, 1, ledstrippin);
+            //hwlib::cout << "Goed! blauw\n";
+            getcolor = 4;
+            break;
+        }
+        hwlib::wait_ms(endwait);
+    }
+    //hwlib::cout << color << "   " << getcolor << "\n";
+    return color==getcolor;
+}
+
+bool checkmorecolor(int duration, bool green, bool red, bool yellow, bool blue, due::pin_out  ledstrippin){
+    due::pin_out sensorGreenOut = due::pin_out( due::pins::d3 );
+    due::pin_out sensorRedOut = due::pin_out( due::pins::d11 );
+    due::pin_out sensorYellowOut = due::pin_out( due::pins::d8 );
+    due::pin_out sensorBlueOut = due::pin_out( due::pins::d4 );
+
+    due::pin_in sensorGreenIn = due::pin_in( due::pins::d2 );
+    due::pin_in sensorRedIn = due::pin_in( due::pins::d10 );
+    due::pin_in sensorYellowIn = due::pin_in( due::pins::d9 );
+    due::pin_in sensorBlueIn = due::pin_in( due::pins::d5 );
+
+    int distance = 500;
+    bool checkgreen = 0, checkred = 0, checkyellow = 0, checkblue = 0;
+    structw2812 colorgreen(hwlib::color(0,255,0));
+    structw2812 colorred(hwlib::color(255,0,0));
+    structw2812 coloryellow(hwlib::color(255,255,0));
+    structw2812 colorblue(hwlib::color(0,0,255));
+    structw2812 colorblack(hwlib::color(0,0,0));
+    ledstrip_array ledstripje(ledstrippin, 60);
+    ledstripje.changegroupled(1,60,colorblack);
+    ledstripje.write(1);
+
+    for(int i = 0; i < duration; i++){
+        if(getafstand(sensorGreenOut, sensorGreenIn) < distance){
+            if(green == 0){return 0;}
+            checkgreen = green;
+            ledstripje.changegroupled(1,15,colorgreen);
+        }
+        if(getafstand(sensorRedOut, sensorRedIn) < distance){
+            if(red == 0){return 0;}
+            checkred = red;
+            ledstripje.changegroupled(16,30,colorred);
+        }
+        if(getafstand(sensorYellowOut, sensorYellowIn) < distance){
+            if(yellow == 0){return 0;}
+            checkyellow = yellow;
+            ledstripje.changegroupled(31,45,coloryellow);
+        }
+        if(getafstand(sensorBlueOut, sensorBlueIn) < distance){
+            if(blue == 0){return 0;}
+            checkblue = blue;
+            ledstripje.changegroupled(46,60,colorblue);
+        }
+        hwlib::wait_ms(50);
+        ledstripje.write(1);
+        if(checkgreen == green && checkred == red && checkyellow == yellow && checkblue == blue){
+            return 1;
         }
     }
+    return 0;
+}
 
+//approx 200 ms per loop
+bool getcolor(int duration, bool green, bool red, bool yellow, bool blue, due::pin_out ledstrippin){
+    for(int i = 0; i < duration; i++){
+        if(green && checkcolor(1, 1, ledstrippin, 0)){green = false;}
+        if(red   && checkcolor(1, 2, ledstrippin, 0)){red   = false;}
+        if(yellow&& checkcolor(1, 3, ledstrippin, 0)){yellow= false;}
+        if(blue  && checkcolor(1, 4, ledstrippin, 0)){blue  = false;}
+    }
+    return !(green || red || yellow || blue);
+}
 
-    void write(bool x){
-        if(x){
-            for(int i = 0; i < 24; i++){
-                pin.write(1);
-                pin.flush();
-                wait_busy(1);
-                pin.write(pinoutarray[i]);
-                pin.flush();
-                wait_busy(15);
-                pin.write(0);
-                pin.flush();
-                wait_busy(5);
-            }
+void normalsimon(due::pin_out ledstrippin, ledstrip ledstrippie){
+    //ledstrip
+    int array[20] = {0};
+    for(int i = 0; i < 20; i++){
+        array[i] = rand() % 4 + 1;
+    }
+    bool gaatgoed = true;
+    int beurt = 0;
+    while(gaatgoed){
+        for(int i = 0; i < beurt; i++){
+            showcolor(array[i] == 1, array[i] == 2, array[i] == 3, array[i] == 4, ledstrippin);
+            hwlib::wait_ms(400);
+        }
+        for(int i = 0; i < beurt; i++){
+            if(!gaatgoed){break;}
+            gaatgoed = checkcolor(10, array[i], ledstrippin);
+        }
+        hwlib::wait_ms(300);
+        if(beurt >= 15 || !gaatgoed){
+            
+            gaatgoed = false;
         }else{
-            for(int i = 0; i < 24; i++){
-                pin.write(1);
-                pin.flush();
-                wait_busy(1);
-                pin.write(pinoutarrayoff[i]);
-                pin.flush();
-                wait_busy(15);
-                pin.write(0);
-                pin.flush();
-                wait_busy(5);
-            }
+            //ledstrippie.snake(hwlib::color(0,255,0), 40, 1);
+            beurt++;
         }
-        hwlib::wait_us(100);
+
     }
+    ledstrippie.snake(hwlib::color(255,0,0), 40, 2);
+    hwlib::cout << "Het einde van het hele programma\n";
+    return;
+}
 
-    void changecolor(hwlib::color rgbcolor, bool writebit = 1){
-        int minus;
-        uint8_t rgbvalue;
-        int colorcount = 0;
-        for(uint8_t x : {rgbcolor.green, rgbcolor.red, rgbcolor.blue}){
-            minus = 128;
-            rgbvalue = x;
-            for(int i = 0; i < 8; i++){
-                if(rgbvalue >= minus){
-                    rgbvalue -= minus;
-                    if(writebit){
-                        pinoutarray[colorcount] = (1);
-                    }else{
-                        pinoutarrayoff[colorcount] = (1);
-                    }
-                }else{
-                    if(writebit){
-                        pinoutarray[colorcount] = (0);
-                    }else{
-                        pinoutarrayoff[colorcount] = (0);
-                    }
-                }
-                minus = minus/2;
-                colorcount++;
-            }
-        }
-    }
+bool randbool(){
+    return rand() % 2;
+}
 
-    void blink(int ms, int  times){
-        for(int i; i < times; i++){
-            write(1);
-            hwlib::wait_ms(ms);
-            write(0);
-            hwlib::wait_ms(ms);
-        }
-    }
-};
-
-struct structw2812{
-    hwlib::color on = hwlib::color(255,255,255);
-    hwlib::color off = hwlib::color(0,0,0);
-    structw2812(hwlib::color on = hwlib::color(255,255,255), hwlib::color off = hwlib::color(0,0,0)):
-    on(on),
-    off(off){}
-};
-
-class ledstrip_array{
-private:
-    due::pin_out pin;
-    int totalleds;
-    structw2812 leds[120];
-
-    bool* makearray(const hwlib::color & rgbcolor, bool pinoutarray[24] = {}){
-        int minus;
-        uint8_t rgbvalue;
-        int colorcount = 0;
-            for(uint8_t x : {rgbcolor.green, rgbcolor.red, rgbcolor.blue}){
-                minus = 128;
-                rgbvalue = x;
-                for(int i = 0; i < 8; i++){
-                    if(rgbvalue >= minus){
-                        rgbvalue -= minus;
-                        pinoutarray[colorcount] = (1);
-                    }else{
-                        pinoutarray[colorcount] = (0);
-                    }
-                    minus = minus/2;
-                    colorcount++;
+void levels(due::pin_out ledstrippin, ledstrip ledstrippie){
+    int doublecolor[24] = {1,1,0,0,0,1,1,0,0,0,1,1,1,0,0,1,1,0,1,0,0,1,0,1};
+    int colorarray[15]= {0};
+    int level1[] = {1,2,2};
+    int level2[] = {2,1,2,1};
+    int level3[] = {2,2,2,2,1};
+    int *levels[] = {level1, level2, level3};
+    int sizeoflevels[3] = {3,4,5};
+    bool gaatgoed = true;
+    int level = 0;
+    for(;;){
+        int beurt = 1;
+        for(int j = 0; j < sizeoflevels[level]; j++){
+            hwlib::cout << beurt << " ste/de beurt\n";
+            for(int i = beurt-1; i < beurt; i++){
+                if(levels[j][i] == 1){
+                    colorarray[i] = rand() % 4 + 1;
+                    hwlib::cout << colorarray[i] << "\n";
+                }else if(levels[j][i] == 2){
+                    colorarray[i] =rand() % 4 + 5;
+                    hwlib::cout << colorarray[i] << "\n";
                 }
             }
-        return pinoutarray;
-    }
-
-public:
-    ledstrip_array(due::pin_out pin, int totalleds):
-    pin( pin ),
-    totalleds(totalleds)
-    {}
-
-    void write(bool x){
-        for(int i=0; i < totalleds; i++){
-            bool pinoutarray[24];
-            if(x){
-                makearray(leds[i].on, pinoutarray);
-            }else{
-                makearray(leds[i].off, pinoutarray);
-            }
-            for(int i = 0; i < 24; i++){
-                pin.write(1);
-                pin.flush();
-                wait_busy(1);
-                pin.write(pinoutarray[i]);
-                pin.flush();
-                wait_busy(10);
-                pin.write(0);
-                pin.flush();
-            }
-        }
-    }
-
-    void changeled(int led, structw2812 rgbstruct){
-        leds[led] = rgbstruct;
-    }
-    //Example: The first 10 leds: changegroupled(1,10) Beginning at led 1 ending at led 10
-    void changegroupled(int beginled, int endled, structw2812 rgbstruct){
-        for(int i = beginled-1; i < endled; i++){
-            leds[i] = rgbstruct;
-        }
-    }
-
-    void shiftforward(int times = 1){
-        for(int j = 0; j < times; j++){
-            structw2812 buffer = leds[totalleds-1];
-            for(int i = totalleds-1; i > 0; i--){
-                leds[i] = leds[i-1];
-            }
-            leds[0] = buffer;
-        }
-    }
-
-    void shiftback(int times = 1){
-        for(int j = 0; j < times; j++){
-            structw2812 buffer = leds[0];
-            for(int i = 0; i < totalleds-1; i++){
-                leds[i] = leds[i+1];
-            }
-            leds[totalleds-1] = buffer;
-        }
-    }
-};
-
-class ledstrip{
-private:
-    hwlib::pin_out& pin;
-    int ledcount;
-public:
-
-    ledstrip(hwlib::pin_out& pin, int ledcount):
-    pin( pin ),
-    ledcount( ledcount )
-    {}
-
-    void fillleds(const hwlib::color & rgbcolor, int count, bool refreshall = true){
-        auto testpin = hwlib::target::pin_out( hwlib::target::pins::d7 );
-        int minus;
-        uint8_t rgbvalue;
-        bool pinoutarray[24] = {};
-        int colorcount = 0;
-        for(uint8_t x : {rgbcolor.green, rgbcolor.red, rgbcolor.blue}){
-            minus = 128;
-            rgbvalue = x;
-            for(int i = 0; i < 8; i++){
-                if(rgbvalue >= minus){
-                    rgbvalue -= minus;
-                    pinoutarray[colorcount] = (1);
-                }else{
-                    pinoutarray[colorcount] = (0);
-                }
-                minus = minus/2;
-                colorcount++;
-            }
-        }
-        for(int j = 0; j < count; j++){
-            for(int i = 0; i < 24; i++){
-                testpin.write(1);
-                testpin.flush();
-                wait_busy(1);
-                testpin.write(pinoutarray[i]);
-                testpin.flush();
-                wait_busy(10);
-                testpin.write(0);
-                testpin.flush();
-            }
-        }
-        if(refreshall){
-            for(int j = 0; j < ledcount-count; j++){
-                for(int i = 0; i < 24; i++){
-                    testpin.write(1);
-                    testpin.flush();
-                    wait_busy(1);
-                    testpin.write(0);
-                    testpin.flush();
-                    wait_busy(10);
-                    testpin.write(0);
-                    testpin.flush();
+            hwlib::cout << "===================" << "\n";
+            for(int i = 0; i < beurt; i++){
+                if(colorarray[i] <= 4){
+                    showcolor(colorarray[i] == 1, colorarray[i] == 2, colorarray[i] == 3, colorarray[i] == 4, ledstrippin);
+                    hwlib::wait_ms(400);
+                }else if(colorarray[i] <= 8){
+                    int colord = (colorarray[i]-5)*4;
+                    hwlib::cout << colord << " colord \n";
+                    showcolor(doublecolor[colord], doublecolor[colord+1], doublecolor[colord+2], doublecolor[colord+3], ledstrippin);
+                    hwlib::wait_ms(400);
                 }
             }
-        }
-    }
-        
-    //fastness(us per colorshift. 5000 recomended)
-    void rainbow(int fastness, int rainbows){
-        for(int j = 0; j < rainbows; j++){
-            for(int i = 0; i < 256; i++){
-                fillleds(hwlib::color(255-i,i,0),ledcount);
-                hwlib::wait_us(fastness);
-            }
-            for(int i = 0; i < 256; i++){
-                fillleds(hwlib::color(0,255-i,i),ledcount);
-                hwlib::wait_us(fastness); 
-            }
-            for(int i = 0; i < 256; i++){
-                fillleds(hwlib::color(i,0,255-i),ledcount);
-                hwlib::wait_us(fastness); 
-            }
-        }
-    }
-
-    void oneled(const hwlib::color & rgbcolor, int lednumber){
-        auto testpin = hwlib::target::pin_out( hwlib::target::pins::d7 );
-        fillleds(hwlib::color(0,0,0), lednumber-1);
-        fillleds(rgbcolor, 1);
-        fillleds(hwlib::color(0,0,0), ledcount - lednumber);
-    }
-
-    void addleds(const hwlib::color & rgbcolor, int leds){
-        fillleds(rgbcolor, leds, 0);
-    }
-
-    void snake(const hwlib::color & rgbcolor, int fastness, int snakes, bool reverse = false){
-        for(int j = 0; j < snakes; j++){
-            for(int i = 0; i < ledcount; i++){
-                fillleds(rgbcolor,i);
-                hwlib::wait_ms(fastness);
-            }
-            if(reverse){
-                for(int i = 0; i < ledcount; i++){
-                    fillleds(rgbcolor,ledcount-i);
-                    hwlib::wait_ms(fastness);
+            hwlib::cout << "===================" << "\n";
+            for(int i = 0; i < beurt; i++){
+                if(colorarray[i] <= 4){
+                    gaatgoed = checkcolor(20, colorarray[i], ledstrippin);
+                    hwlib::wait_ms(400);
+                }else if(colorarray[i] <= 8){
+                    int colord = (colorarray[i]-5)*4;
+                    gaatgoed = checkmorecolor(60, doublecolor[colord], doublecolor[colord+1], doublecolor[colord+2], doublecolor[colord+3], ledstrippin);
+                    hwlib::wait_ms(400);
+                }
+                if(!gaatgoed){
+                    hwlib::cout << "FOUT GEMAAKT\n";
+                    ledstrippie.snake(hwlib::color(255,0,0), 40, 2);
+                    return;
                 }
             }
-            fillleds(hwlib::color(0,0,0), ledcount);
+            hwlib::cout << "//////////////////" << "\n";
+            beurt++;
         }
+        ledstrippie.snake(hwlib::color(0,255,0), 40, 1);
+        level++;
     }
-
-    void flow(const hwlib::color & rgbcolor, int ledson, int ledsoff, int fastness, int flows){
-        for(int h = 0; h < flows * (ledcount/(ledson + ledsoff)); h++){
-            for(int i = 0; i < (ledsoff+ledson); i++){
-                addleds(hwlib::color(0,0,0),i);
-                for(int j = 0; j < (ledcount/(ledson + ledsoff)); j++){
-                    addleds(rgbcolor, ledson);
-                    addleds(hwlib::color(0,0,0), ledsoff);
-                }
-                hwlib::wait_ms(200);
-            }
-        }
-    }
-
-    //Color, fastness(ms per led), kits
-    void kitt(const hwlib::color & rgbcolor, int fastness, int kits){
-        for(int j = 0; j < kits; j++){
-            for(int i = 0; i < ledcount; i++){
-                oneled(rgbcolor, i);
-                hwlib::wait_ms(fastness);
-            }
-            for(int i = 0; i < ledcount; i++){
-                oneled(rgbcolor, ledcount-i);
-                hwlib::wait_ms(fastness);
-            }
-        }
-    }
-
-    void disco(){
-        for(int i = 0; i < ledcount; i++){
-            fillleds(hwlib::color(rand()%256,rand()%256,rand()%256),1);
-        }
-        hwlib::wait_ms(2000);
-        for(int i = 0; i < ledcount; i++){
-            fillleds(hwlib::color(rand()%256,rand()%256,rand()%256),60);
-            hwlib::wait_ms(100);
-        }
-        snake(hwlib::color(rand()%256,rand()%256,rand()%256), 20, 1);
-        snake(hwlib::color(rand()%256,rand()%256,rand()%256), 20, 1);
-        kitt(hwlib::color(rand()%256,rand()%256,rand()%256), 20,1);
-        kitt(hwlib::color(rand()%256,rand()%256,rand()%256), 20,1);
-        rainbow(500, 2);
-    }
-
-};
+}
 
 int main(void){
     hwlib::wait_ms(1000);
-    due::pin_out pin = due::pin_out( due::pins::d6 );
-    ledstrip leds(pin, 60);
-    hwlib::color wit(255,255,255);
-    hwlib::color rood(255,0,0);
-    hwlib::color groen(0,255,0);
-    hwlib::color blauw(0,0,255);
-    hwlib::color uit(0,0,0);
-    structw2812 groenrood(groen,rood);
-    structw2812 roodgroen(rood, groen);
-    // groenrood.on = groen;
-    // groenrood.off = rood;
-    ledstrip_array ledjes(pin, 60);
-    ledjes.changegroupled(2,60, groenrood);
-    ledjes.changegroupled(3,6,roodgroen);
-    for(;;){
-        for(int i = 0; i < 256; i++){
-            structw2812 rainbow(hwlib::color(255-i,i,0));
-            hwlib::wait_us(5000);
-            ledjes.changeled(0, rainbow);
-            ledjes.write(1);
+    srand(987);
+    due::pin_out ledstrippin = due::pin_out( due::pins::d7 );
+    ledstrip ledstrippie(ledstrippin, 60);
+    int duration = 30;
+    for(;;){        
+        ledstrippie.fillleds(hwlib::color(0,255,0), 60);
+        if(checkcolor(duration, 4, ledstrippin)){
+            ledstrippie.fillleds(hwlib::color(0,0,0), 60);
+            hwlib::wait_ms(2000);
+            normalsimon(ledstrippin, ledstrippie);
         }
-        for(int i = 0; i < 256; i++){
-            structw2812 rainbow(hwlib::color(0,255-i,i));
-            hwlib::wait_us(5000); 
-            ledjes.changeled(0, rainbow);
-            ledjes.write(1);
+        ledstrippie.fillleds(hwlib::color(255, 0 ,0), 60);
+        if(checkcolor(duration, 4, ledstrippin)){
+            ledstrippie.fillleds(hwlib::color(0,0,0), 60);
+            hwlib::wait_ms(2000);
+            levels(ledstrippin, ledstrippie);
+            ledstrippie.fillleds(hwlib::color(255,255,255), 60);
+            hwlib::wait_ms(2000);        
         }
-        for(int i = 0; i < 256; i++){
-            structw2812 rainbow(hwlib::color(i,0,255-i));
-            hwlib::wait_us(5000); 
-            ledjes.changeled(0, rainbow);
-            ledjes.write(1);
-        }
+        ledstrippie.fillleds(hwlib::color(255,255,0), 60);
+        if(checkcolor(duration, 4, ledstrippin)){break;}
     }
+    return 0;
 }
