@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['w2812_20ledstrip',['w2812 Ledstrip',['../index.html',1,'']]]
+  ['ws2812b_20documentation',['ws2812b documentation',['../index.html',1,'']]]
 ];

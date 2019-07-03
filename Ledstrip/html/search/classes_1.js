@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['structw2812',['structw2812',['../structstructw2812.html',1,'']]]
+  ['structws2812',['structws2812',['../structstructws2812.html',1,'']]]
 ];
