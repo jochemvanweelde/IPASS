@@ -298,8 +298,8 @@ void levels(ledstrip_port ledstrippie){
                 ledstrippie.write(0);
                 hwlib::wait_ms(500);
             }
-            //ledstrippie.changegroupled(1,31,hwlib::color(0,255,0));
-            //ledstrippie.snake(40, 1);
+            ledstrippie.changegroupled(1,31,hwlib::color(0,255,0));
+            blink(ledstrippie, 200, 4);
             hwlib::wait_ms(1500);
             level++;
         }
@@ -315,15 +315,20 @@ YELLOW = BREAK PROGRAM(STOP) //2 player simon -> no time
 ======================================================*/
 int main(void){
     hwlib::wait_ms(1000);
-    srand(987);
     due::pin_out ledstrippin1 = due::pin_out( due::pins::d53 );
     due::pin_out ledstrippin2 = due::pin_out( due::pins::d8 );
     ledstrip ledbegin(ledstrippin1, 24);
-    ledstrip_invert ledstrip1(ledstrippin1, 24);
+    ledstrip_array ledstrip1(ledstrippin1, 24);
     ledstrip_array ledstrip2(ledstrippin2, 7);
     ledstrip_port ledstrip3(ledstrip1, ledstrip2);
     int duration = 30;
-    int ledcount = 24;;
+    int ledcount = 24;
+    uint32_t srandinteger = 2147483647;
+    while(!(checkcolor(1, 4, ledstrip3))){
+        srandinteger--;
+    }
+    hwlib::wait_ms(400);
+    srand(srandinteger);
     for(;;){        
         ledbegin.fillleds(hwlib::color(0,255,0), ledcount);
         if(checkcolor(duration, 4, ledstrip3)){
@@ -342,18 +347,5 @@ int main(void){
         ledbegin.fillleds(hwlib::color(255,255,0), ledcount);
         if(checkcolor(duration, 4, ledstrip3)){break;}
     }
-
-    // structws2812 green(hwlib::color(0,255,0));
-    // structws2812 red(hwlib::color(255,0,0));
-    // structws2812 yellow(hwlib::color(255,255,0));
-    // structws2812 blue(hwlib::color(0,0,255));
-    // structws2812 black(hwlib::color(0,0,0));
-    // ledstrip3.changegroupled(1,31,black);
-    // ledstrip3.changegroupled(9,15,green); //WORKING!
-    // ledstrip3.changegroupled(16,24,red); //WORKING!
-    // ledstrip3.changegroupled(1,8,yellow); //WORKING!
-    // ledstrip3.changegroupled(30,31,blue); //WORKING!
-
-
     return 0;
 }

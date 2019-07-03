@@ -37,6 +37,10 @@ Discarded input sections
                 0x0000000000000000       0x78 simonlib.o
  .text._ZN16ws2812led_invert5writeEb
                 0x0000000000000000       0xa8 simonlib.o
+ .text._ZN15ledstrip_invert5writeEb
+                0x0000000000000000       0x50 simonlib.o
+ .text._ZN15ledstrip_invert5snakeEii
+                0x0000000000000000       0x8c simonlib.o
  .text._ZN3due11ad_pin_infoENS_7ad_pinsE
                 0x0000000000000000       0x1c simonlib.o
  .text._ZN3due11ad_seq_infoEm
@@ -49,6 +53,8 @@ Discarded input sections
                 0x0000000000000000        0x4 simonlib.o
  .rodata._ZTV14ws2812led_port
                 0x0000000000000000        0xc simonlib.o
+ .rodata._ZTV15ledstrip_invert
+                0x0000000000000000       0x24 simonlib.o
  .rodata._ZTV16ws2812led_invert
                 0x0000000000000000       0x10 simonlib.o
  .rodata._ZTV9ws2812led
@@ -1171,7 +1177,7 @@ LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb
                 [!provide]                        PROVIDE (__ram_size = __ram_size)
                 [!provide]                        PROVIDE (__ram_end = __ram_end)
 
-.text           0x0000000000000000     0x19f0
+.text           0x0000000000000000     0x193c
                 0x0000000000000000                . = ALIGN (0x4)
                 0x0000000000000000                __text_start = .
                 [!provide]                        PROVIDE (__text_start = __text_start)
@@ -1218,195 +1224,186 @@ LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb
  .text._ZN14ledstrip_array5writeEb
                 0x000000000000027c       0x68 simonlib.o
                 0x000000000000027c                ledstrip_array::write(bool)
- .text._ZN15ledstrip_invert5writeEb
-                0x00000000000002e4       0x50 simonlib.o
-                0x00000000000002e4                ledstrip_invert::write(bool)
  .text._ZN14ledstrip_array5snakeEii
-                0x0000000000000334       0x8c simonlib.o
-                0x0000000000000334                ledstrip_array::snake(int, int)
- .text._ZN15ledstrip_invert5snakeEii
-                0x00000000000003c0       0x8c simonlib.o
-                0x00000000000003c0                ledstrip_invert::snake(int, int)
+                0x00000000000002e4       0x8c simonlib.o
+                0x00000000000002e4                ledstrip_array::snake(int, int)
  .text._ZN6sam3xa10SystemInitEv
-                0x000000000000044c       0x7c simonlib.o
-                0x000000000000044c                sam3xa::SystemInit()
+                0x0000000000000370       0x7c simonlib.o
+                0x0000000000000370                sam3xa::SystemInit()
  .text._ZN3due8pin_infoENS_4pinsE
-                0x00000000000004c8       0x20 simonlib.o
-                0x00000000000004c8                due::pin_info(due::pins)
+                0x00000000000003ec       0x20 simonlib.o
+                0x00000000000003ec                due::pin_info(due::pins)
  .text._ZN3due14port_registersEm
-                0x00000000000004e8       0x54 simonlib.o
-                0x00000000000004e8                due::port_registers(unsigned long)
+                0x000000000000040c       0x54 simonlib.o
+                0x000000000000040c                due::port_registers(unsigned long)
  .text._ZN3due12ticks_per_usEv
-                0x000000000000053c        0x6 simonlib.o
-                0x000000000000053c                due::ticks_per_us()
- *fill*         0x0000000000000542        0x2 
+                0x0000000000000460        0x6 simonlib.o
+                0x0000000000000460                due::ticks_per_us()
+ *fill*         0x0000000000000466        0x2 
  .text._ZN3due9now_ticksEv
-                0x0000000000000544       0x80 simonlib.o
-                0x0000000000000544                due::now_ticks()
+                0x0000000000000468       0x80 simonlib.o
+                0x0000000000000468                due::now_ticks()
  .text._ZN5hwlib5panicEPKcj
-                0x00000000000005c4        0x2 hwlib.o
-                0x00000000000005c4                hwlib::panic(char const*, unsigned int)
+                0x00000000000004e8        0x2 hwlib.o
+                0x00000000000004e8                hwlib::panic(char const*, unsigned int)
  .text._ZN5hwlib6now_usEv
-                0x00000000000005c6       0x1c hwlib.o
-                0x00000000000005c6                hwlib::now_us()
+                0x00000000000004ea       0x1c hwlib.o
+                0x00000000000004ea                hwlib::now_us()
  .text._ZN5hwlib12wait_us_busyEi
-                0x00000000000005e2       0x1c hwlib.o
-                0x00000000000005e2                hwlib::wait_us_busy(int)
+                0x0000000000000506       0x1c hwlib.o
+                0x0000000000000506                hwlib::wait_us_busy(int)
  .text._ZN5hwlib7wait_usEi
-                0x00000000000005fe        0x8 hwlib.o
-                0x00000000000005fe                hwlib::wait_us(int)
+                0x0000000000000522        0x8 hwlib.o
+                0x0000000000000522                hwlib::wait_us(int)
  .text._ZN5hwlib12wait_ms_busyEi
-                0x0000000000000606       0x16 hwlib.o
-                0x0000000000000606                hwlib::wait_ms_busy(int)
+                0x000000000000052a       0x16 hwlib.o
+                0x000000000000052a                hwlib::wait_ms_busy(int)
  .text._ZN5hwlib7wait_msEi
-                0x000000000000061c        0x8 hwlib.o
-                0x000000000000061c                hwlib::wait_ms(int)
+                0x0000000000000540        0x8 hwlib.o
+                0x0000000000000540                hwlib::wait_ms(int)
  .text._ZN3due6pin_in4readEv
-                0x0000000000000624       0x10 main.o
-                0x0000000000000624                due::pin_in::read()
+                0x0000000000000548       0x10 main.o
+                0x0000000000000548                due::pin_in::read()
  .text._ZN3due6pin_in7refreshEv
-                0x0000000000000634        0x2 main.o
-                0x0000000000000634                due::pin_in::refresh()
- *fill*         0x0000000000000636        0xa 
+                0x0000000000000558        0x2 main.o
+                0x0000000000000558                due::pin_in::refresh()
+ *fill*         0x000000000000055a        0x6 
  .text._ZL9wait_busyl
-                0x0000000000000640        0x8 main.o
+                0x0000000000000560        0x8 main.o
  .text._ZN14ledstrip_dummy5writeEb
-                0x0000000000000648        0x2 main.o
-                0x0000000000000648                ledstrip_dummy::write(bool)
+                0x0000000000000568        0x2 main.o
+                0x0000000000000568                ledstrip_dummy::write(bool)
  .text._ZN14ledstrip_dummy9countledsEv
-                0x000000000000064a        0x4 main.o
-                0x000000000000064a                ledstrip_dummy::countleds()
+                0x000000000000056a        0x4 main.o
+                0x000000000000056a                ledstrip_dummy::countleds()
  .text._ZN14ledstrip_dummy14changegroupledEiiRK12structws2812
-                0x000000000000064e        0x2 main.o
-                0x000000000000064e                ledstrip_dummy::changegroupled(int, int, structws2812 const&)
+                0x000000000000056e        0x2 main.o
+                0x000000000000056e                ledstrip_dummy::changegroupled(int, int, structws2812 const&)
  .text._ZN3due6pin_inC2ENS_4pinsE
-                0x0000000000000650       0x34 main.o
-                0x0000000000000650                due::pin_in::pin_in(due::pins)
-                0x0000000000000650                due::pin_in::pin_in(due::pins)
+                0x0000000000000570       0x34 main.o
+                0x0000000000000570                due::pin_in::pin_in(due::pins)
+                0x0000000000000570                due::pin_in::pin_in(due::pins)
  .text._ZN3due7pin_outC2ENS_4pinsE
-                0x0000000000000684       0x34 main.o
-                0x0000000000000684                due::pin_out::pin_out(due::pins)
-                0x0000000000000684                due::pin_out::pin_out(due::pins)
+                0x00000000000005a4       0x34 main.o
+                0x00000000000005a4                due::pin_out::pin_out(due::pins)
+                0x00000000000005a4                due::pin_out::pin_out(due::pins)
  .text._ZN14ledstrip_arrayC2EN3due7pin_outEi
-                0x00000000000006b8       0x40 main.o
-                0x00000000000006b8                ledstrip_array::ledstrip_array(due::pin_out, int)
-                0x00000000000006b8                ledstrip_array::ledstrip_array(due::pin_out, int)
+                0x00000000000005d8       0x40 main.o
+                0x00000000000005d8                ledstrip_array::ledstrip_array(due::pin_out, int)
+                0x00000000000005d8                ledstrip_array::ledstrip_array(due::pin_out, int)
  .text._ZN8ledstrip8fillledsERKN5hwlib5colorEib
-                0x00000000000006f8       0xf0 main.o
-                0x00000000000006f8                ledstrip::fillleds(hwlib::color const&, int, bool)
+                0x0000000000000618       0xf0 main.o
+                0x0000000000000618                ledstrip::fillleds(hwlib::color const&, int, bool)
  .text._Z10getafstandN3due7pin_outENS_6pin_inE
-                0x00000000000007e8       0x3a main.o
-                0x00000000000007e8                getafstand(due::pin_out, due::pin_in)
+                0x0000000000000708       0x3a main.o
+                0x0000000000000708                getafstand(due::pin_out, due::pin_in)
  .text._Z9showcolorbbbb13ledstrip_port
-                0x0000000000000822       0x92 main.o
-                0x0000000000000822                showcolor(bool, bool, bool, bool, ledstrip_port)
+                0x0000000000000742       0x92 main.o
+                0x0000000000000742                showcolor(bool, bool, bool, bool, ledstrip_port)
  .text._ZN13ledstrip_portC2ERKS_
-                0x00000000000008b4       0x30 main.o
-                0x00000000000008b4                ledstrip_port::ledstrip_port(ledstrip_port const&)
-                0x00000000000008b4                ledstrip_port::ledstrip_port(ledstrip_port const&)
+                0x00000000000007d4       0x30 main.o
+                0x00000000000007d4                ledstrip_port::ledstrip_port(ledstrip_port const&)
+                0x00000000000007d4                ledstrip_port::ledstrip_port(ledstrip_port const&)
  .text._Z10checkcolorii13ledstrip_porti
-                0x00000000000008e4      0x174 main.o
-                0x00000000000008e4                checkcolor(int, int, ledstrip_port, int)
+                0x0000000000000804      0x174 main.o
+                0x0000000000000804                checkcolor(int, int, ledstrip_port, int)
  .text._Z14checkmorecoloribbbb13ledstrip_port
-                0x0000000000000a58      0x1b8 main.o
-                0x0000000000000a58                checkmorecolor(int, bool, bool, bool, bool, ledstrip_port)
+                0x0000000000000978      0x1b8 main.o
+                0x0000000000000978                checkmorecolor(int, bool, bool, bool, bool, ledstrip_port)
  .text._Z6buzzerii
-                0x0000000000000c10       0x34 main.o
-                0x0000000000000c10                buzzer(int, int)
+                0x0000000000000b30       0x34 main.o
+                0x0000000000000b30                buzzer(int, int)
  .text._Z11normalsimon13ledstrip_port
-                0x0000000000000c44       0xea main.o
-                0x0000000000000c44                normalsimon(ledstrip_port)
- *fill*         0x0000000000000d2e        0x2 
+                0x0000000000000b64       0xea main.o
+                0x0000000000000b64                normalsimon(ledstrip_port)
+ *fill*         0x0000000000000c4e        0x2 
  .text._Z6levels13ledstrip_port
-                0x0000000000000d30      0x378 main.o
-                0x0000000000000d30                levels(ledstrip_port)
+                0x0000000000000c50      0x3b8 main.o
+                0x0000000000000c50                levels(ledstrip_port)
  .text.startup.main
-                0x00000000000010a8      0x20c main.o
-                0x00000000000010a8                main
+                0x0000000000001008      0x21c main.o
+                0x0000000000001008                main
  .text.__startup
-                0x00000000000012b4       0x48 bmptk_cortex.o
-                0x00000000000012b4                __startup
- .text          0x00000000000012fc       0x30 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_aeabi_uldivmod.o)
-                0x00000000000012fc                __aeabi_uldivmod
- .text          0x000000000000132c      0x2d0 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_udivmoddi4.o)
-                0x000000000000132c                __udivmoddi4
- .text          0x00000000000015fc        0x4 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_dvmd_tls.o)
-                0x00000000000015fc                __aeabi_ldiv0
- .text          0x0000000000001600       0xec /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-memcpy.o)
-                0x0000000000001600                memcpy
- .text.memset   0x00000000000016ec       0x94 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-memset.o)
-                0x00000000000016ec                memset
- .text.srand    0x0000000000001780       0x10 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-rand.o)
-                0x0000000000001780                srand
- .text.rand     0x0000000000001790       0x3c /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-rand.o)
-                0x0000000000001790                rand
-                0x00000000000017cc                . = ALIGN (0x4)
+                0x0000000000001224       0x48 bmptk_cortex.o
+                0x0000000000001224                __startup
+ .text          0x000000000000126c       0x30 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_aeabi_uldivmod.o)
+                0x000000000000126c                __aeabi_uldivmod
+ .text          0x000000000000129c      0x2d0 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_udivmoddi4.o)
+                0x000000000000129c                __udivmoddi4
+ .text          0x000000000000156c        0x4 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_dvmd_tls.o)
+                0x000000000000156c                __aeabi_ldiv0
+ .text          0x0000000000001570       0xec /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-memcpy.o)
+                0x0000000000001570                memcpy
+ .text.memset   0x000000000000165c       0x94 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-memset.o)
+                0x000000000000165c                memset
+ .text.srand    0x00000000000016f0       0x10 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-rand.o)
+                0x00000000000016f0                srand
+ .text.rand     0x0000000000001700       0x3c /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-rand.o)
+                0x0000000000001700                rand
+                0x000000000000173c                . = ALIGN (0x4)
  *(.glue_7t .glue_7)
- .glue_7        0x00000000000017cc        0x0 linker stubs
- .glue_7t       0x00000000000017cc        0x0 linker stubs
-                0x00000000000017cc                . = ALIGN (0x4)
+ .glue_7        0x000000000000173c        0x0 linker stubs
+ .glue_7t       0x000000000000173c        0x0 linker stubs
+                0x000000000000173c                . = ALIGN (0x4)
  *(.rodata .rodata.* .gnu.linkonce.r.*)
  .rodata._ZTVN3due7pin_outE
-                0x00000000000017cc       0x10 simonlib.o
-                0x00000000000017cc                vtable for due::pin_out
+                0x000000000000173c       0x10 simonlib.o
+                0x000000000000173c                vtable for due::pin_out
  .rodata._ZN3due8pin_infoENS_4pinsE.str1.1
-                0x00000000000017dc       0x38 simonlib.o
+                0x000000000000174c       0x38 simonlib.o
  .rodata._ZTV13ledstrip_port
-                0x0000000000001814       0x14 simonlib.o
-                0x0000000000001814                vtable for ledstrip_port
+                0x0000000000001784       0x14 simonlib.o
+                0x0000000000001784                vtable for ledstrip_port
  .rodata._ZTV14ledstrip_array
-                0x0000000000001828       0x24 simonlib.o
-                0x0000000000001828                vtable for ledstrip_array
- .rodata._ZTV15ledstrip_invert
-                0x000000000000184c       0x24 simonlib.o
-                0x000000000000184c                vtable for ledstrip_invert
+                0x0000000000001798       0x24 simonlib.o
+                0x0000000000001798                vtable for ledstrip_array
  .rodata._ZZN3due8pin_infoENS_4pinsEE14pin_info_array
-                0x0000000000001870       0xa4 simonlib.o
+                0x00000000000017bc       0xa4 simonlib.o
  .rodata._ZTVN3due6pin_inE
-                0x0000000000001914       0x10 main.o
-                0x0000000000001914                vtable for due::pin_in
+                0x0000000000001860       0x10 main.o
+                0x0000000000001860                vtable for due::pin_in
  .rodata._ZTV14ledstrip_dummy
-                0x0000000000001924       0x14 main.o
-                0x0000000000001924                vtable for ledstrip_dummy
- .rodata        0x0000000000001938       0xb8 main.o
-                0x00000000000019f0                . = ALIGN (0x4)
+                0x0000000000001870       0x14 main.o
+                0x0000000000001870                vtable for ledstrip_dummy
+ .rodata        0x0000000000001884       0xb8 main.o
+                0x000000000000193c                . = ALIGN (0x4)
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x00000000000019f0                . = ALIGN (0x4)
+                0x000000000000193c                . = ALIGN (0x4)
  *(.gcc_except_table)
-                0x00000000000019f0                . = ALIGN (0x4)
+                0x000000000000193c                . = ALIGN (0x4)
  *(.eh_frame_hdr)
-                0x00000000000019f0                . = ALIGN (0x4)
+                0x000000000000193c                . = ALIGN (0x4)
  *(.eh_frame)
-                0x00000000000019f0                . = ALIGN (0x4)
-                0x00000000000019f0                __text_end = .
+                0x000000000000193c                . = ALIGN (0x4)
+                0x000000000000193c                __text_end = .
                 [!provide]                        PROVIDE (__text_end = __text_end)
 
-.vfp11_veneer   0x00000000000019f0        0x0
- .vfp11_veneer  0x00000000000019f0        0x0 linker stubs
+.vfp11_veneer   0x000000000000193c        0x0
+ .vfp11_veneer  0x000000000000193c        0x0 linker stubs
 
-.v4_bx          0x00000000000019f0        0x0
- .v4_bx         0x00000000000019f0        0x0 linker stubs
+.v4_bx          0x000000000000193c        0x0
+ .v4_bx         0x000000000000193c        0x0 linker stubs
 
-.iplt           0x00000000000019f0        0x0
- .iplt          0x00000000000019f0        0x0 simonlib.o
+.iplt           0x000000000000193c        0x0
+ .iplt          0x000000000000193c        0x0 simonlib.o
 
 .IF_YOU_SEE_THIS_YOU_HAVE_ONE_OR_MORE_GLOBAL_OBJECT_CONSTRUCTORS
  *(.init)
  *(.preinit_array)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array)
-                0x00000000000019f0                . = ALIGN (0x4)
-                0x00000000000019f0                __exidx_start = .
+                0x000000000000193c                . = ALIGN (0x4)
+                0x000000000000193c                __exidx_start = .
                 [!provide]                        PROVIDE (__exidx_start = __exidx_start)
 
-.ARM.exidx      0x00000000000019f0        0x8
+.ARM.exidx      0x000000000000193c        0x8
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
- .ARM.exidx     0x00000000000019f0        0x8 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_udivmoddi4.o)
+ .ARM.exidx     0x000000000000193c        0x8 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_udivmoddi4.o)
 
-.rel.dyn        0x00000000000019f8        0x0
- .rel.iplt      0x00000000000019f8        0x0 simonlib.o
-                0x00000000000019f8                . = ALIGN (0x4)
-                0x00000000000019f8                __exidx_end = .
+.rel.dyn        0x0000000000001944        0x0
+ .rel.iplt      0x0000000000001944        0x0 simonlib.o
+                0x0000000000001944                . = ALIGN (0x4)
+                0x0000000000001944                __exidx_end = .
                 [!provide]                        PROVIDE (__exidx_end = __exidx_end)
 
 .bss            0x0000000020000000    0x12010
@@ -1441,9 +1438,9 @@ LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb
                 0x0000000020012010                __bss_end = .
                 [!provide]                        PROVIDE (__bss_end = __bss_end)
 
-.data           0x0000000020012010      0x438 load address 0x00000000000019f8
+.data           0x0000000020012010      0x438 load address 0x0000000000001944
                 0x0000000020012010                . = ALIGN (0x4)
-                0x00000000000019f8                __data_init_start = LOADADDR (.data)
+                0x0000000000001944                __data_init_start = LOADADDR (.data)
                 [!provide]                        PROVIDE (__data_init_start = __data_init_start)
                 0x0000000020012010                __data_start = .
                 [!provide]                        PROVIDE (__data_start = __data_start)
@@ -1464,13 +1461,13 @@ LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb
                 0x0000000020012448                . = ALIGN (0x4)
                 0x0000000020012448                __data_end = .
                 [!provide]                        PROVIDE (__data_end = __data_end)
-                0x00000000000019f8                __data_init_end = LOADADDR (.data)
+                0x0000000000001944                __data_init_end = LOADADDR (.data)
                 [!provide]                        PROVIDE (__data_init_end = __data_init_end)
                 [!provide]                        PROVIDE (__data_size = (__data_end - __data_start))
                 [!provide]                        PROVIDE (__data_init_size = __data_size)
                 [!provide]                        PROVIDE (__data_init_end = (__data_init_start + __data_init_size))
 
-.igot.plt       0x0000000020012448        0x0 load address 0x0000000000001e30
+.igot.plt       0x0000000020012448        0x0 load address 0x0000000000001d7c
  .igot.plt      0x0000000020012448        0x0 simonlib.o
                 0x0000000020012448                . = ALIGN (0x4)
                 0x0000000020012448                __heap_start = .
