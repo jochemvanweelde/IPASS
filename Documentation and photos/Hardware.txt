@@ -1,0 +1,7 @@
+De volgende hardware heb ik gebruikt:
+
+-WS2812B ledstrip (60 leds 2 meter)
+-HC-SR04 sensor
+-Arduino Due
+-Buzzer
+-Wires
