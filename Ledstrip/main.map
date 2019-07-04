@@ -1177,7 +1177,7 @@ LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb
                 [!provide]                        PROVIDE (__ram_size = __ram_size)
                 [!provide]                        PROVIDE (__ram_end = __ram_end)
 
-.text           0x0000000000000000     0x1948
+.text           0x0000000000000000     0x19c8
                 0x0000000000000000                . = ALIGN (0x4)
                 0x0000000000000000                __text_start = .
                 [!provide]                        PROVIDE (__text_start = __text_start)
@@ -1314,96 +1314,95 @@ LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb
                 0x0000000000000b30       0x34 main.o
                 0x0000000000000b30                buzzer(int, int)
  .text._Z11normalsimon13ledstrip_port
-                0x0000000000000b64       0xea main.o
+                0x0000000000000b64      0x16c main.o
                 0x0000000000000b64                normalsimon(ledstrip_port)
- *fill*         0x0000000000000c4e        0x2 
  .text._Z6levels13ledstrip_port
-                0x0000000000000c50      0x3b8 main.o
-                0x0000000000000c50                levels(ledstrip_port)
+                0x0000000000000cd0      0x3b8 main.o
+                0x0000000000000cd0                levels(ledstrip_port)
  .text.startup.main
-                0x0000000000001008      0x228 main.o
-                0x0000000000001008                main
+                0x0000000000001088      0x228 main.o
+                0x0000000000001088                main
  .text.__startup
-                0x0000000000001230       0x48 bmptk_cortex.o
-                0x0000000000001230                __startup
- .text          0x0000000000001278       0x30 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_aeabi_uldivmod.o)
-                0x0000000000001278                __aeabi_uldivmod
- .text          0x00000000000012a8      0x2d0 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_udivmoddi4.o)
-                0x00000000000012a8                __udivmoddi4
- .text          0x0000000000001578        0x4 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_dvmd_tls.o)
-                0x0000000000001578                __aeabi_ldiv0
- .text          0x000000000000157c       0xec /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-memcpy.o)
-                0x000000000000157c                memcpy
- .text.memset   0x0000000000001668       0x94 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-memset.o)
-                0x0000000000001668                memset
- .text.srand    0x00000000000016fc       0x10 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-rand.o)
-                0x00000000000016fc                srand
- .text.rand     0x000000000000170c       0x3c /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-rand.o)
-                0x000000000000170c                rand
-                0x0000000000001748                . = ALIGN (0x4)
+                0x00000000000012b0       0x48 bmptk_cortex.o
+                0x00000000000012b0                __startup
+ .text          0x00000000000012f8       0x30 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_aeabi_uldivmod.o)
+                0x00000000000012f8                __aeabi_uldivmod
+ .text          0x0000000000001328      0x2d0 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_udivmoddi4.o)
+                0x0000000000001328                __udivmoddi4
+ .text          0x00000000000015f8        0x4 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_dvmd_tls.o)
+                0x00000000000015f8                __aeabi_ldiv0
+ .text          0x00000000000015fc       0xec /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-memcpy.o)
+                0x00000000000015fc                memcpy
+ .text.memset   0x00000000000016e8       0x94 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-memset.o)
+                0x00000000000016e8                memset
+ .text.srand    0x000000000000177c       0x10 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-rand.o)
+                0x000000000000177c                srand
+ .text.rand     0x000000000000178c       0x3c /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-rand.o)
+                0x000000000000178c                rand
+                0x00000000000017c8                . = ALIGN (0x4)
  *(.glue_7t .glue_7)
- .glue_7        0x0000000000001748        0x0 linker stubs
- .glue_7t       0x0000000000001748        0x0 linker stubs
-                0x0000000000001748                . = ALIGN (0x4)
+ .glue_7        0x00000000000017c8        0x0 linker stubs
+ .glue_7t       0x00000000000017c8        0x0 linker stubs
+                0x00000000000017c8                . = ALIGN (0x4)
  *(.rodata .rodata.* .gnu.linkonce.r.*)
  .rodata._ZTVN3due7pin_outE
-                0x0000000000001748       0x10 ws2812.o
-                0x0000000000001748                vtable for due::pin_out
+                0x00000000000017c8       0x10 ws2812.o
+                0x00000000000017c8                vtable for due::pin_out
  .rodata._ZN3due8pin_infoENS_4pinsE.str1.1
-                0x0000000000001758       0x38 ws2812.o
+                0x00000000000017d8       0x38 ws2812.o
  .rodata._ZTV13ledstrip_port
-                0x0000000000001790       0x14 ws2812.o
-                0x0000000000001790                vtable for ledstrip_port
+                0x0000000000001810       0x14 ws2812.o
+                0x0000000000001810                vtable for ledstrip_port
  .rodata._ZTV14ledstrip_array
-                0x00000000000017a4       0x24 ws2812.o
-                0x00000000000017a4                vtable for ledstrip_array
+                0x0000000000001824       0x24 ws2812.o
+                0x0000000000001824                vtable for ledstrip_array
  .rodata._ZZN3due8pin_infoENS_4pinsEE14pin_info_array
-                0x00000000000017c8       0xa4 ws2812.o
+                0x0000000000001848       0xa4 ws2812.o
  .rodata._ZTVN3due6pin_inE
-                0x000000000000186c       0x10 main.o
-                0x000000000000186c                vtable for due::pin_in
+                0x00000000000018ec       0x10 main.o
+                0x00000000000018ec                vtable for due::pin_in
  .rodata._ZTV14ledstrip_dummy
-                0x000000000000187c       0x14 main.o
-                0x000000000000187c                vtable for ledstrip_dummy
- .rodata        0x0000000000001890       0xb8 main.o
-                0x0000000000001948                . = ALIGN (0x4)
+                0x00000000000018fc       0x14 main.o
+                0x00000000000018fc                vtable for ledstrip_dummy
+ .rodata        0x0000000000001910       0xb8 main.o
+                0x00000000000019c8                . = ALIGN (0x4)
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x0000000000001948                . = ALIGN (0x4)
+                0x00000000000019c8                . = ALIGN (0x4)
  *(.gcc_except_table)
-                0x0000000000001948                . = ALIGN (0x4)
+                0x00000000000019c8                . = ALIGN (0x4)
  *(.eh_frame_hdr)
-                0x0000000000001948                . = ALIGN (0x4)
+                0x00000000000019c8                . = ALIGN (0x4)
  *(.eh_frame)
-                0x0000000000001948                . = ALIGN (0x4)
-                0x0000000000001948                __text_end = .
+                0x00000000000019c8                . = ALIGN (0x4)
+                0x00000000000019c8                __text_end = .
                 [!provide]                        PROVIDE (__text_end = __text_end)
 
-.vfp11_veneer   0x0000000000001948        0x0
- .vfp11_veneer  0x0000000000001948        0x0 linker stubs
+.vfp11_veneer   0x00000000000019c8        0x0
+ .vfp11_veneer  0x00000000000019c8        0x0 linker stubs
 
-.v4_bx          0x0000000000001948        0x0
- .v4_bx         0x0000000000001948        0x0 linker stubs
+.v4_bx          0x00000000000019c8        0x0
+ .v4_bx         0x00000000000019c8        0x0 linker stubs
 
-.iplt           0x0000000000001948        0x0
- .iplt          0x0000000000001948        0x0 ws2812.o
+.iplt           0x00000000000019c8        0x0
+ .iplt          0x00000000000019c8        0x0 ws2812.o
 
 .IF_YOU_SEE_THIS_YOU_HAVE_ONE_OR_MORE_GLOBAL_OBJECT_CONSTRUCTORS
  *(.init)
  *(.preinit_array)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array)
-                0x0000000000001948                . = ALIGN (0x4)
-                0x0000000000001948                __exidx_start = .
+                0x00000000000019c8                . = ALIGN (0x4)
+                0x00000000000019c8                __exidx_start = .
                 [!provide]                        PROVIDE (__exidx_start = __exidx_start)
 
-.ARM.exidx      0x0000000000001948        0x8
+.ARM.exidx      0x00000000000019c8        0x8
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
- .ARM.exidx     0x0000000000001948        0x8 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_udivmoddi4.o)
+ .ARM.exidx     0x00000000000019c8        0x8 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_udivmoddi4.o)
 
-.rel.dyn        0x0000000000001950        0x0
- .rel.iplt      0x0000000000001950        0x0 ws2812.o
-                0x0000000000001950                . = ALIGN (0x4)
-                0x0000000000001950                __exidx_end = .
+.rel.dyn        0x00000000000019d0        0x0
+ .rel.iplt      0x00000000000019d0        0x0 ws2812.o
+                0x00000000000019d0                . = ALIGN (0x4)
+                0x00000000000019d0                __exidx_end = .
                 [!provide]                        PROVIDE (__exidx_end = __exidx_end)
 
 .bss            0x0000000020000000    0x12010
@@ -1438,9 +1437,9 @@ LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb
                 0x0000000020012010                __bss_end = .
                 [!provide]                        PROVIDE (__bss_end = __bss_end)
 
-.data           0x0000000020012010      0x438 load address 0x0000000000001950
+.data           0x0000000020012010      0x438 load address 0x00000000000019d0
                 0x0000000020012010                . = ALIGN (0x4)
-                0x0000000000001950                __data_init_start = LOADADDR (.data)
+                0x00000000000019d0                __data_init_start = LOADADDR (.data)
                 [!provide]                        PROVIDE (__data_init_start = __data_init_start)
                 0x0000000020012010                __data_start = .
                 [!provide]                        PROVIDE (__data_start = __data_start)
@@ -1461,13 +1460,13 @@ LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb
                 0x0000000020012448                . = ALIGN (0x4)
                 0x0000000020012448                __data_end = .
                 [!provide]                        PROVIDE (__data_end = __data_end)
-                0x0000000000001950                __data_init_end = LOADADDR (.data)
+                0x00000000000019d0                __data_init_end = LOADADDR (.data)
                 [!provide]                        PROVIDE (__data_init_end = __data_init_end)
                 [!provide]                        PROVIDE (__data_size = (__data_end - __data_start))
                 [!provide]                        PROVIDE (__data_init_size = __data_size)
                 [!provide]                        PROVIDE (__data_init_end = (__data_init_start + __data_init_size))
 
-.igot.plt       0x0000000020012448        0x0 load address 0x0000000000001d88
+.igot.plt       0x0000000020012448        0x0 load address 0x0000000000001e08
  .igot.plt      0x0000000020012448        0x0 ws2812.o
                 0x0000000020012448                . = ALIGN (0x4)
                 0x0000000020012448                __heap_start = .

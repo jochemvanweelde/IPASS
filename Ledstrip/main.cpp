@@ -205,8 +205,17 @@ void normalsimon(ledstrip_port ledstrippin){
         hwlib::wait_ms(100);
         buzzer(1000, 150); //buzzer effect so the user knows when he can play
         for(int i = 0; i < beurt; i++){
-            if(!gaatgoed){break;} //If wrong sensor -> break
             gaatgoed = checkcolor(20, array[i], ledstrippin); //Check if the user activates the right colors
+            if(!gaatgoed){
+                for(int a = 0; a < 3; a++){
+                    ledstrippin.changegroupled(1,31,hwlib::color(255,0,0));
+                    ledstrippin.write(1);
+                    buzzer(1000, 300);
+                    showcolor(array[i] == 1, array[i] == 2, array[i] == 3, array[i] == 4, ledstrippin); //Show the correct color
+                    buzzer(500, 600);
+                }
+                break; //If wrong sensor -> break
+            } 
         }
         hwlib::wait_ms(300);
         if(beurt >= 100 || !gaatgoed){ //This is made so a user cant go out of bounce
@@ -216,8 +225,6 @@ void normalsimon(ledstrip_port ledstrippin){
         }
 
     }
-    //ledstrippin.changegroupled(1,31,hwlib::color(255,0,0));
-    //ledstrippin.snake(40, 2); //Show a red snake, the user now knows it's game over.
     return;
 }
 
