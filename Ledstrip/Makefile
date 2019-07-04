@@ -9,10 +9,10 @@
 #############################################################################
 
 # source files in this project (main.cpp is automatically assumed)
-SOURCES := simonlib.cpp
+SOURCES := ws2812.cpp
 
 # header files in this project
-HEADERS := simonlib.hpp
+HEADERS := ws2812.hpp
 
 # other places to look for files for this project
 SEARCH  := 

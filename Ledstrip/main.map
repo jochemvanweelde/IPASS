@@ -9,7 +9,7 @@ Archive member included to satisfy reference by file (symbol)
 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-memcpy.o)
                               main.o (memcpy)
 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-memset.o)
-                              simonlib.o (memset)
+                              ws2812.o (memset)
 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-rand.o)
                               main.o (srand)
 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-impure.o)
@@ -22,47 +22,47 @@ __dso_handle        0x4               bmptk_cortex.o
 
 Discarded input sections
 
- .group         0x0000000000000000        0x8 simonlib.o
- .group         0x0000000000000000        0x8 simonlib.o
- .group         0x0000000000000000        0xc simonlib.o
- .group         0x0000000000000000        0xc simonlib.o
- .text          0x0000000000000000        0x0 simonlib.o
- .data          0x0000000000000000        0x0 simonlib.o
- .bss           0x0000000000000000        0x0 simonlib.o
+ .group         0x0000000000000000        0x8 ws2812.o
+ .group         0x0000000000000000        0x8 ws2812.o
+ .group         0x0000000000000000        0xc ws2812.o
+ .group         0x0000000000000000        0xc ws2812.o
+ .text          0x0000000000000000        0x0 ws2812.o
+ .data          0x0000000000000000        0x0 ws2812.o
+ .bss           0x0000000000000000        0x0 ws2812.o
  .text._ZN9ws2812led11changecolorEN5hwlib5colorEb
-                0x0000000000000000       0x70 simonlib.o
+                0x0000000000000000       0x70 ws2812.o
  .text._ZN14ws2812led_port5writeEb
-                0x0000000000000000       0x22 simonlib.o
+                0x0000000000000000       0x22 ws2812.o
  .text._ZN9ws2812led5writeEb
-                0x0000000000000000       0x78 simonlib.o
+                0x0000000000000000       0x78 ws2812.o
  .text._ZN16ws2812led_invert5writeEb
-                0x0000000000000000       0xa8 simonlib.o
+                0x0000000000000000       0xa8 ws2812.o
  .text._ZN15ledstrip_invert5writeEb
-                0x0000000000000000       0x50 simonlib.o
+                0x0000000000000000       0x50 ws2812.o
  .text._ZN15ledstrip_invert5snakeEii
-                0x0000000000000000       0x8c simonlib.o
+                0x0000000000000000       0x8c ws2812.o
  .text._ZN3due11ad_pin_infoENS_7ad_pinsE
-                0x0000000000000000       0x1c simonlib.o
+                0x0000000000000000       0x1c ws2812.o
  .text._ZN3due11ad_seq_infoEm
-                0x0000000000000000       0x20 simonlib.o
+                0x0000000000000000       0x20 ws2812.o
  .text._ZN5hwlib9uart_putcEc
-                0x0000000000000000        0x4 simonlib.o
+                0x0000000000000000        0x4 ws2812.o
  .text._ZN5hwlib19uart_char_availableEv
-                0x0000000000000000        0x4 simonlib.o
+                0x0000000000000000        0x4 ws2812.o
  .text._ZN5hwlib9uart_getcEv
-                0x0000000000000000        0x4 simonlib.o
+                0x0000000000000000        0x4 ws2812.o
  .rodata._ZTV14ws2812led_port
-                0x0000000000000000        0xc simonlib.o
+                0x0000000000000000        0xc ws2812.o
  .rodata._ZTV15ledstrip_invert
-                0x0000000000000000       0x24 simonlib.o
+                0x0000000000000000       0x24 ws2812.o
  .rodata._ZTV16ws2812led_invert
-                0x0000000000000000       0x10 simonlib.o
+                0x0000000000000000       0x10 ws2812.o
  .rodata._ZTV9ws2812led
-                0x0000000000000000       0x10 simonlib.o
+                0x0000000000000000       0x10 ws2812.o
  .rodata._ZZN3due11ad_pin_infoENS_7ad_pinsEE17ad_pin_info_array
-                0x0000000000000000        0xc simonlib.o
+                0x0000000000000000        0xc ws2812.o
  .rodata._ZZN3due11ad_seq_infoEmE12ad_seq_array
-                0x0000000000000000       0x70 simonlib.o
+                0x0000000000000000       0x70 ws2812.o
  .group         0x0000000000000000        0x8 hwlib.o
  .group         0x0000000000000000        0x8 hwlib.o
  .group         0x0000000000000000        0x8 hwlib.o
@@ -1155,7 +1155,7 @@ nul              0x0000000020018000 0x0000000000000000 xrw
 Linker script and memory map
 
 LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a
-LOAD simonlib.o
+LOAD ws2812.o
 LOAD hwlib.o
 LOAD main.o
 LOAD bmptk_cortex.o
@@ -1177,7 +1177,7 @@ LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb
                 [!provide]                        PROVIDE (__ram_size = __ram_size)
                 [!provide]                        PROVIDE (__ram_end = __ram_end)
 
-.text           0x0000000000000000     0x193c
+.text           0x0000000000000000     0x1944
                 0x0000000000000000                . = ALIGN (0x4)
                 0x0000000000000000                __text_start = .
                 [!provide]                        PROVIDE (__text_start = __text_start)
@@ -1188,60 +1188,60 @@ LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb
                 0x0000000000000020                . = ALIGN (0x4)
  *(.text .text.* .gnu.linkonce.t.*)
  .text._ZN3due7pin_out5writeEb
-                0x0000000000000020        0xe simonlib.o
+                0x0000000000000020        0xe ws2812.o
                 0x0000000000000020                due::pin_out::write(bool)
  .text._ZN3due7pin_out5flushEv
-                0x000000000000002e        0x2 simonlib.o
+                0x000000000000002e        0x2 ws2812.o
                 0x000000000000002e                due::pin_out::flush()
  .text._ZL9wait_busyl
-                0x0000000000000030        0x8 simonlib.o
+                0x0000000000000030        0x8 ws2812.o
  .text._ZN14ledstrip_array9changeledEiRK12structws2812
-                0x0000000000000038       0x10 simonlib.o
+                0x0000000000000038       0x10 ws2812.o
                 0x0000000000000038                ledstrip_array::changeled(int, structws2812 const&)
  .text._ZN14ledstrip_array14changegroupledEiiRK12structws2812
-                0x0000000000000048       0x1c simonlib.o
+                0x0000000000000048       0x1c ws2812.o
                 0x0000000000000048                ledstrip_array::changegroupled(int, int, structws2812 const&)
  .text._ZN14ledstrip_array12shiftforwardEi
-                0x0000000000000064       0x7e simonlib.o
+                0x0000000000000064       0x7e ws2812.o
                 0x0000000000000064                ledstrip_array::shiftforward(int)
  .text._ZN14ledstrip_array9shiftbackEi
-                0x00000000000000e2       0x7a simonlib.o
+                0x00000000000000e2       0x7a ws2812.o
                 0x00000000000000e2                ledstrip_array::shiftback(int)
  .text._ZN14ledstrip_array9countledsEv
-                0x000000000000015c        0x4 simonlib.o
+                0x000000000000015c        0x4 ws2812.o
                 0x000000000000015c                ledstrip_array::countleds()
  .text._ZN13ledstrip_port5writeEb
-                0x0000000000000160       0x22 simonlib.o
+                0x0000000000000160       0x22 ws2812.o
                 0x0000000000000160                ledstrip_port::write(bool)
  .text._ZN13ledstrip_port14changegroupledEiiRK12structws2812
-                0x0000000000000182       0x86 simonlib.o
+                0x0000000000000182       0x86 ws2812.o
                 0x0000000000000182                ledstrip_port::changegroupled(int, int, structws2812 const&)
  .text._ZN13ledstrip_port9countledsEv
-                0x0000000000000208       0x24 simonlib.o
+                0x0000000000000208       0x24 ws2812.o
                 0x0000000000000208                ledstrip_port::countleds()
  .text._ZN14ledstrip_array9makearrayERKN5hwlib5colorEPb.isra.2
-                0x000000000000022c       0x50 simonlib.o
+                0x000000000000022c       0x50 ws2812.o
  .text._ZN14ledstrip_array5writeEb
-                0x000000000000027c       0x68 simonlib.o
+                0x000000000000027c       0x68 ws2812.o
                 0x000000000000027c                ledstrip_array::write(bool)
  .text._ZN14ledstrip_array5snakeEii
-                0x00000000000002e4       0x8c simonlib.o
+                0x00000000000002e4       0x8c ws2812.o
                 0x00000000000002e4                ledstrip_array::snake(int, int)
  .text._ZN6sam3xa10SystemInitEv
-                0x0000000000000370       0x7c simonlib.o
+                0x0000000000000370       0x7c ws2812.o
                 0x0000000000000370                sam3xa::SystemInit()
  .text._ZN3due8pin_infoENS_4pinsE
-                0x00000000000003ec       0x20 simonlib.o
+                0x00000000000003ec       0x20 ws2812.o
                 0x00000000000003ec                due::pin_info(due::pins)
  .text._ZN3due14port_registersEm
-                0x000000000000040c       0x54 simonlib.o
+                0x000000000000040c       0x54 ws2812.o
                 0x000000000000040c                due::port_registers(unsigned long)
  .text._ZN3due12ticks_per_usEv
-                0x0000000000000460        0x6 simonlib.o
+                0x0000000000000460        0x6 ws2812.o
                 0x0000000000000460                due::ticks_per_us()
  *fill*         0x0000000000000466        0x2 
  .text._ZN3due9now_ticksEv
-                0x0000000000000468       0x80 simonlib.o
+                0x0000000000000468       0x80 ws2812.o
                 0x0000000000000468                due::now_ticks()
  .text._ZN5hwlib5panicEPKcj
                 0x00000000000004e8        0x2 hwlib.o
@@ -1321,89 +1321,89 @@ LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb
                 0x0000000000000c50      0x3b8 main.o
                 0x0000000000000c50                levels(ledstrip_port)
  .text.startup.main
-                0x0000000000001008      0x21c main.o
+                0x0000000000001008      0x224 main.o
                 0x0000000000001008                main
  .text.__startup
-                0x0000000000001224       0x48 bmptk_cortex.o
-                0x0000000000001224                __startup
- .text          0x000000000000126c       0x30 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_aeabi_uldivmod.o)
-                0x000000000000126c                __aeabi_uldivmod
- .text          0x000000000000129c      0x2d0 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_udivmoddi4.o)
-                0x000000000000129c                __udivmoddi4
- .text          0x000000000000156c        0x4 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_dvmd_tls.o)
-                0x000000000000156c                __aeabi_ldiv0
- .text          0x0000000000001570       0xec /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-memcpy.o)
-                0x0000000000001570                memcpy
- .text.memset   0x000000000000165c       0x94 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-memset.o)
-                0x000000000000165c                memset
- .text.srand    0x00000000000016f0       0x10 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-rand.o)
-                0x00000000000016f0                srand
- .text.rand     0x0000000000001700       0x3c /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-rand.o)
-                0x0000000000001700                rand
-                0x000000000000173c                . = ALIGN (0x4)
+                0x000000000000122c       0x48 bmptk_cortex.o
+                0x000000000000122c                __startup
+ .text          0x0000000000001274       0x30 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_aeabi_uldivmod.o)
+                0x0000000000001274                __aeabi_uldivmod
+ .text          0x00000000000012a4      0x2d0 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_udivmoddi4.o)
+                0x00000000000012a4                __udivmoddi4
+ .text          0x0000000000001574        0x4 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_dvmd_tls.o)
+                0x0000000000001574                __aeabi_ldiv0
+ .text          0x0000000000001578       0xec /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-memcpy.o)
+                0x0000000000001578                memcpy
+ .text.memset   0x0000000000001664       0x94 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-memset.o)
+                0x0000000000001664                memset
+ .text.srand    0x00000000000016f8       0x10 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-rand.o)
+                0x00000000000016f8                srand
+ .text.rand     0x0000000000001708       0x3c /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-rand.o)
+                0x0000000000001708                rand
+                0x0000000000001744                . = ALIGN (0x4)
  *(.glue_7t .glue_7)
- .glue_7        0x000000000000173c        0x0 linker stubs
- .glue_7t       0x000000000000173c        0x0 linker stubs
-                0x000000000000173c                . = ALIGN (0x4)
+ .glue_7        0x0000000000001744        0x0 linker stubs
+ .glue_7t       0x0000000000001744        0x0 linker stubs
+                0x0000000000001744                . = ALIGN (0x4)
  *(.rodata .rodata.* .gnu.linkonce.r.*)
  .rodata._ZTVN3due7pin_outE
-                0x000000000000173c       0x10 simonlib.o
-                0x000000000000173c                vtable for due::pin_out
+                0x0000000000001744       0x10 ws2812.o
+                0x0000000000001744                vtable for due::pin_out
  .rodata._ZN3due8pin_infoENS_4pinsE.str1.1
-                0x000000000000174c       0x38 simonlib.o
+                0x0000000000001754       0x38 ws2812.o
  .rodata._ZTV13ledstrip_port
-                0x0000000000001784       0x14 simonlib.o
-                0x0000000000001784                vtable for ledstrip_port
+                0x000000000000178c       0x14 ws2812.o
+                0x000000000000178c                vtable for ledstrip_port
  .rodata._ZTV14ledstrip_array
-                0x0000000000001798       0x24 simonlib.o
-                0x0000000000001798                vtable for ledstrip_array
+                0x00000000000017a0       0x24 ws2812.o
+                0x00000000000017a0                vtable for ledstrip_array
  .rodata._ZZN3due8pin_infoENS_4pinsEE14pin_info_array
-                0x00000000000017bc       0xa4 simonlib.o
+                0x00000000000017c4       0xa4 ws2812.o
  .rodata._ZTVN3due6pin_inE
-                0x0000000000001860       0x10 main.o
-                0x0000000000001860                vtable for due::pin_in
+                0x0000000000001868       0x10 main.o
+                0x0000000000001868                vtable for due::pin_in
  .rodata._ZTV14ledstrip_dummy
-                0x0000000000001870       0x14 main.o
-                0x0000000000001870                vtable for ledstrip_dummy
- .rodata        0x0000000000001884       0xb8 main.o
-                0x000000000000193c                . = ALIGN (0x4)
+                0x0000000000001878       0x14 main.o
+                0x0000000000001878                vtable for ledstrip_dummy
+ .rodata        0x000000000000188c       0xb8 main.o
+                0x0000000000001944                . = ALIGN (0x4)
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x000000000000193c                . = ALIGN (0x4)
+                0x0000000000001944                . = ALIGN (0x4)
  *(.gcc_except_table)
-                0x000000000000193c                . = ALIGN (0x4)
+                0x0000000000001944                . = ALIGN (0x4)
  *(.eh_frame_hdr)
-                0x000000000000193c                . = ALIGN (0x4)
+                0x0000000000001944                . = ALIGN (0x4)
  *(.eh_frame)
-                0x000000000000193c                . = ALIGN (0x4)
-                0x000000000000193c                __text_end = .
+                0x0000000000001944                . = ALIGN (0x4)
+                0x0000000000001944                __text_end = .
                 [!provide]                        PROVIDE (__text_end = __text_end)
 
-.vfp11_veneer   0x000000000000193c        0x0
- .vfp11_veneer  0x000000000000193c        0x0 linker stubs
+.vfp11_veneer   0x0000000000001944        0x0
+ .vfp11_veneer  0x0000000000001944        0x0 linker stubs
 
-.v4_bx          0x000000000000193c        0x0
- .v4_bx         0x000000000000193c        0x0 linker stubs
+.v4_bx          0x0000000000001944        0x0
+ .v4_bx         0x0000000000001944        0x0 linker stubs
 
-.iplt           0x000000000000193c        0x0
- .iplt          0x000000000000193c        0x0 simonlib.o
+.iplt           0x0000000000001944        0x0
+ .iplt          0x0000000000001944        0x0 ws2812.o
 
 .IF_YOU_SEE_THIS_YOU_HAVE_ONE_OR_MORE_GLOBAL_OBJECT_CONSTRUCTORS
  *(.init)
  *(.preinit_array)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array)
-                0x000000000000193c                . = ALIGN (0x4)
-                0x000000000000193c                __exidx_start = .
+                0x0000000000001944                . = ALIGN (0x4)
+                0x0000000000001944                __exidx_start = .
                 [!provide]                        PROVIDE (__exidx_start = __exidx_start)
 
-.ARM.exidx      0x000000000000193c        0x8
+.ARM.exidx      0x0000000000001944        0x8
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
- .ARM.exidx     0x000000000000193c        0x8 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_udivmoddi4.o)
+ .ARM.exidx     0x0000000000001944        0x8 /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/libgcc.a(_udivmoddi4.o)
 
-.rel.dyn        0x0000000000001944        0x0
- .rel.iplt      0x0000000000001944        0x0 simonlib.o
-                0x0000000000001944                . = ALIGN (0x4)
-                0x0000000000001944                __exidx_end = .
+.rel.dyn        0x000000000000194c        0x0
+ .rel.iplt      0x000000000000194c        0x0 ws2812.o
+                0x000000000000194c                . = ALIGN (0x4)
+                0x000000000000194c                __exidx_end = .
                 [!provide]                        PROVIDE (__exidx_end = __exidx_end)
 
 .bss            0x0000000020000000    0x12010
@@ -1426,11 +1426,11 @@ LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb
                 0x0000000020012000                . = ALIGN (0x4)
  *(.bss .bss.* .gnu.linkonce.b.*)
  .bss._ZZN3due9now_ticksEvE4high
-                0x0000000020012000        0x8 simonlib.o
+                0x0000000020012000        0x8 ws2812.o
  .bss._ZZN3due9now_ticksEvE8last_low
-                0x0000000020012008        0x4 simonlib.o
+                0x0000000020012008        0x4 ws2812.o
  .bss._ZZN3due9now_ticksEvE9init_done
-                0x000000002001200c        0x1 simonlib.o
+                0x000000002001200c        0x1 ws2812.o
                 0x0000000020012010                . = ALIGN (0x4)
  *fill*         0x000000002001200d        0x3 
  *(COMMON)
@@ -1438,16 +1438,16 @@ LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb
                 0x0000000020012010                __bss_end = .
                 [!provide]                        PROVIDE (__bss_end = __bss_end)
 
-.data           0x0000000020012010      0x438 load address 0x0000000000001944
+.data           0x0000000020012010      0x438 load address 0x000000000000194c
                 0x0000000020012010                . = ALIGN (0x4)
-                0x0000000000001944                __data_init_start = LOADADDR (.data)
+                0x000000000000194c                __data_init_start = LOADADDR (.data)
                 [!provide]                        PROVIDE (__data_init_start = __data_init_start)
                 0x0000000020012010                __data_start = .
                 [!provide]                        PROVIDE (__data_start = __data_start)
                 0x0000000020012010                . = ALIGN (0x4)
  *(.data .data.* .gnu.linkonce.d.*)
  .data._ZN6sam3xa15SystemCoreClockE
-                0x0000000020012010        0x4 simonlib.o
+                0x0000000020012010        0x4 ws2812.o
                 0x0000000020012010                sam3xa::SystemCoreClock
  .data.dumbledstrip
                 0x0000000020012014        0x4 main.o
@@ -1461,14 +1461,14 @@ LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb
                 0x0000000020012448                . = ALIGN (0x4)
                 0x0000000020012448                __data_end = .
                 [!provide]                        PROVIDE (__data_end = __data_end)
-                0x0000000000001944                __data_init_end = LOADADDR (.data)
+                0x000000000000194c                __data_init_end = LOADADDR (.data)
                 [!provide]                        PROVIDE (__data_init_end = __data_init_end)
                 [!provide]                        PROVIDE (__data_size = (__data_end - __data_start))
                 [!provide]                        PROVIDE (__data_init_size = __data_size)
                 [!provide]                        PROVIDE (__data_init_end = (__data_init_start + __data_init_size))
 
-.igot.plt       0x0000000020012448        0x0 load address 0x0000000000001d7c
- .igot.plt      0x0000000020012448        0x0 simonlib.o
+.igot.plt       0x0000000020012448        0x0 load address 0x0000000000001d84
+ .igot.plt      0x0000000020012448        0x0 ws2812.o
                 0x0000000020012448                . = ALIGN (0x4)
                 0x0000000020012448                __heap_start = .
                 [!provide]                        PROVIDE (__heap_start = __heap_start)
@@ -1517,7 +1517,7 @@ LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb
  .debug_frame   0x0000000000000098       0x3c /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/libc.a(lib_a-rand.o)
 
 .comment        0x0000000000000000       0x7f
- .comment       0x0000000000000000       0x7f simonlib.o
+ .comment       0x0000000000000000       0x7f ws2812.o
                                          0x80 (size before relaxing)
  .comment       0x000000000000007f       0x80 hwlib.o
  .comment       0x000000000000007f       0x80 main.o
@@ -1552,7 +1552,7 @@ LOAD /usr/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb
                 0x0000000000000000       0x31
  *(.ARM.attributes)
  .ARM.attributes
-                0x0000000000000000       0x33 simonlib.o
+                0x0000000000000000       0x33 ws2812.o
  .ARM.attributes
                 0x0000000000000033       0x33 hwlib.o
  .ARM.attributes
