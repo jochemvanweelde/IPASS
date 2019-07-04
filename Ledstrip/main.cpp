@@ -39,7 +39,7 @@ The ledstrip will turn off after 400 ms.
 void showcolor(bool bgreen, bool bred, bool byellow, bool bblue, ledstrip_port ledstrippie){
     structws2812 green(hwlib::color(0,255,0));
     structws2812 red(hwlib::color(255,0,0));
-    structws2812 yellow(hwlib::color(255,255,0));
+    structws2812 yellow(hwlib::color(255,128,0));
     structws2812 blue(hwlib::color(0,0,255));
     structws2812 black(hwlib::color(0,0,0));
     ledstrippie.changegroupled(1,31,black);
@@ -354,7 +354,7 @@ int main(void){
             ledbegin.fillleds(hwlib::color(255,255,255), ledcount);
             hwlib::wait_ms(2000);        
         }
-        ledbegin.fillleds(hwlib::color(255,255,0), ledcount);
+        ledbegin.fillleds(hwlib::color(255,128,0), ledcount);
         if(checkcolor(duration, 4, ledstrip3)){break;}
     }
     return 0;
