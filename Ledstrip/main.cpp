@@ -58,7 +58,7 @@ It returns true if the corresponding sensor sees the user at a distance lower th
 AND the duration is lower than the given duration in the parameter.
 It returns false if one or more is is false.
 ======================================================*/
-bool checkcolor(int duration, int color, ledstrip_port ledstrippie, int endwait = 50){
+bool checkcolor(int duration, int color, ledstrip_port ledstrippie, bool isbegin = 1, int endwait = 50){
     due::pin_out sensorGreenOut = due::pin_out( due::pins::d22 );
     due::pin_out sensorRedOut = due::pin_out( due::pins::d12 );
     due::pin_out sensorYellowOut = due::pin_out( due::pins::d28 );
@@ -71,6 +71,7 @@ bool checkcolor(int duration, int color, ledstrip_port ledstrippie, int endwait 
 
     int distance = 2000;
     int getcolor = -1;
+    bool toolate = false;
     for(int i = 0; i < duration; i++){
         if(getafstand(sensorGreenOut, sensorGreenIn) < distance){
             showcolor(1, 0, 0, 0, ledstrippie);
@@ -93,7 +94,27 @@ bool checkcolor(int duration, int color, ledstrip_port ledstrippie, int endwait 
             break;
         }
         hwlib::wait_ms(endwait);
+        if(i == duration-1){toolate = true;}
     }
+    if(toolate && isbegin){
+        hwlib::cout << "\nYou were TOO LATE!\n";
+        hwlib::cout << "The correct answer was: |";
+        if(color == 1){hwlib::cout << " Green |";}
+        if(color == 2){hwlib::cout << " Red |";}
+        if(color == 3){hwlib::cout << " Yellow |";}
+        if(color == 4){hwlib::cout << " Blue |";}
+        hwlib::cout << "\n";
+    }
+    else if (color != getcolor && isbegin){
+        hwlib::cout << "\nWrong!\n";
+        hwlib::cout << "The correct answer was: |";
+        if(color == 1){hwlib::cout << " Green |";}
+        if(color == 2){hwlib::cout << " Red |";}
+        if(color == 3){hwlib::cout << " Yellow |";}
+        if(color == 4){hwlib::cout << " Blue |";}
+        hwlib::cout << "\n";
+    }
+    
     return color==getcolor;
 }
 
@@ -118,6 +139,7 @@ bool checkmorecolor(int duration, bool green, bool red, bool yellow, bool blue, 
 
     int distance = 2000;
     bool checkgreen = 0, checkred = 0, checkyellow = 0, checkblue = 0;
+    bool toolate = false;
     structws2812 colorgreen(hwlib::color(0,255,0));
     structws2812 colorred(hwlib::color(255,0,0));
     structws2812 coloryellow(hwlib::color(255,255,0));
@@ -128,22 +150,22 @@ bool checkmorecolor(int duration, bool green, bool red, bool yellow, bool blue, 
 
     for(int i = 0; i < duration; i++){
         if(getafstand(sensorGreenOut, sensorGreenIn) < distance){
-            if(green == 0){return 0;}
+            if(green == 0){break;}
             checkgreen = green;
             ledstrippie.changegroupled(9,15,colorgreen);
         }
         if(getafstand(sensorRedOut, sensorRedIn) < distance){
-            if(red == 0){return 0;}
+            if(red == 0){break;}
             checkred = red;
             ledstrippie.changegroupled(16,24,colorred);
         }
         if(getafstand(sensorYellowOut, sensorYellowIn) < distance){
-            if(yellow == 0){return 0;}
+            if(yellow == 0){break;}
             checkyellow = yellow;
             ledstrippie.changegroupled(1,8,coloryellow);
         }
         if(getafstand(sensorBlueOut, sensorBlueIn) < distance){
-            if(blue == 0){return 0;}
+            if(blue == 0){break;}
             checkblue = blue;
             ledstrippie.changegroupled(25,31,colorblue);
         }
@@ -152,7 +174,16 @@ bool checkmorecolor(int duration, bool green, bool red, bool yellow, bool blue, 
         if(checkgreen == green && checkred == red && checkyellow == yellow && checkblue == blue){
             return 1;
         }
+        if(i == duration-1){toolate = true;}
     }
+    if(toolate){hwlib::cout << "\nYou were TOO LATE!\n";}
+    else{hwlib::cout << "\nWrong!\n";}
+    hwlib::cout << "The correct answer was: |";
+    if(green){hwlib::cout << " Green |";}
+    if(red){hwlib::cout << " Red |";}
+    if(yellow){hwlib::cout << " Yellow |";}
+    if(blue){hwlib::cout << " Blue |";}
+    hwlib::cout << "\n";
     return 0;
 }
 
@@ -323,6 +354,136 @@ void levels(ledstrip_port ledstrippie){
     }
 }
 
+void levelsMultiplayer(ledstrip_port ledstrippie){
+    int doublecolor[24] = {1,1,0,0,0,1,1,0,0,0,1,1,1,0,0,1,1,0,1,0,0,1,0,1}; //All(6) possible double colors. Every four integers represents 1 possible outcome
+    int triplecolor[16] = {1,1,1,0,0,1,1,1,1,0,1,1,1,1,0,1}; //4 possibilities
+    int colorarray[15]= {0};
+    //Levels: 1= 1 random color; 2= 2 random colors at the same time (I didn't have more time to make 3 (slide) and 4. I'll make them in my own time ;) 
+    int level1[] = {2,3,4};
+    int level2[] = {2,3,2,3};
+    int level3[] = {4,2,4,2,4};
+    int level4[] = {3,3,2,2,4,3};
+    int *levels[] = {level1, level2, level3, level4}; //Pointer because it's an array with array's with variable lengths.
+    int sizeoflevels[4] = {3,4,5,6}; // Keep track of the size of the levels.
+    bool gaatgoed = true;
+    int level = 0;
+    int aantallevels = 4; // Keep track of the total level that exist.
+    int beurt;    
+    for(;;){
+        //Add one random color to the colorarray every turn.
+        for(int j = 0; j < aantallevels; j++){ //Loop for every level
+            beurt = 1;
+            for(int k = 0; k < sizeoflevels[j]; k++){ //Loop for every move in the level
+                if(levels[j][beurt-1] == 1){ //Make the color array (1 color at a time)
+                    colorarray[beurt-1] = rand() % 4 + 1; //max 4
+                }else if(levels[j][beurt-1] == 2){ //Make a color array(2 colors at a time)
+                    colorarray[beurt-1] =rand() % 6 + 5; //max 10
+                }else if(levels[j][beurt-1] == 3){
+                    colorarray[beurt-1] = rand() % 4 + 11; //max 14
+                }else if(levels[j][beurt-1] == 4){
+                    colorarray[beurt-1] = 15;
+                }
+                for(int i = 0; i < beurt; i++){ //Show all the colors in the array
+                    if(colorarray[i] <= 4){ //colorarray 1-4
+                        showcolor(colorarray[i] == 1, colorarray[i] == 2, colorarray[i] == 3, colorarray[i] == 4, ledstrippie);
+                        hwlib::wait_ms(400);
+                    }else if(colorarray[i] <= 10){ //colorarray 5-10
+                        int colord = (colorarray[i]-5)*4;
+                        showcolor(doublecolor[colord], doublecolor[colord+1], doublecolor[colord+2], doublecolor[colord+3], ledstrippie); //Selects a situation in the pre-created array
+                        hwlib::wait_ms(400);
+                    }else if(colorarray[i] <= 14){
+                        int colord = (colorarray[i]-11)*4;
+                        showcolor(triplecolor[colord], triplecolor[colord+1], triplecolor[colord+2], triplecolor[colord+3], ledstrippie); //Selects a situation in the pre-created array
+                        hwlib::wait_ms(400);
+                    }else{
+                        showcolor(1,1,1,1,ledstrippie);
+                        hwlib::wait_ms(400);
+                    }
+                }
+                buzzer(800, 50);
+                hwlib::wait_ms(100);
+                buzzer(1000, 150); //Buzzer tone so the user knows when he can play
+                for(int i = 0; i < beurt; i++){ //Let the user reapeat the sequence and check if the user did it correctly.
+                    if(colorarray[i] <= 4){
+                        gaatgoed = checkcolor(20, colorarray[i], ledstrippie);
+                        hwlib::wait_ms(300);
+                        if(!gaatgoed){ //WRONG! input by user.
+                            for(int a = 0; a < 3; a++){
+                                ledstrippie.changegroupled(1,31,hwlib::color(255,0,0));
+                                ledstrippie.write(1);
+                                buzzer(1000, 300);
+                                showcolor(colorarray[i] == 1, colorarray[i] == 2, colorarray[i] == 3, colorarray[i] == 4, ledstrippie); //Show the correct color
+                                buzzer(500, 600);
+                            }
+                            return;
+                        }
+                    }else if(colorarray[i] <= 10){
+                        int colord = (colorarray[i]-5)*4;
+                        gaatgoed = checkmorecolor(20, doublecolor[colord], doublecolor[colord+1], doublecolor[colord+2], doublecolor[colord+3], ledstrippie);
+                        hwlib::wait_ms(300);
+                        ledstrippie.write(0);
+                        if(!gaatgoed){ //WRONG! input by user.
+                            for(int a = 0; a < 3; a++){
+                                ledstrippie.changegroupled(1,31,hwlib::color(255,0,0));
+                                ledstrippie.write(1);
+                                buzzer(1000, 300);
+                                showcolor(doublecolor[colord], doublecolor[colord+1], doublecolor[colord+2], doublecolor[colord+3], ledstrippie); //Show the correct colors
+                                buzzer(500, 600);
+                            }
+                            return;
+                        }
+                    }else if(colorarray[i] <= 14){
+                        int colord = (colorarray[i]-11)*4;
+                        gaatgoed = checkmorecolor(20, triplecolor[colord], triplecolor[colord+1], triplecolor[colord+2], triplecolor[colord+3], ledstrippie);
+                        hwlib::wait_ms(300);
+                        ledstrippie.write(0);
+                        if(!gaatgoed){ //WRONG! input by user.
+                            for(int a = 0; a < 3; a++){
+                                ledstrippie.changegroupled(1,31,hwlib::color(255,0,0));
+                                ledstrippie.write(1);
+                                buzzer(1000, 300);
+                                showcolor(triplecolor[colord], triplecolor[colord+1], triplecolor[colord+2], triplecolor[colord+3], ledstrippie); //Show the correct colors
+                                buzzer(500, 600);
+                            }
+                            return;
+                        }
+                    }else{
+                        gaatgoed = checkmorecolor(20, 1,1,1,1, ledstrippie);
+                        hwlib::wait_ms(300);
+                        ledstrippie.write(0);
+                        if(!gaatgoed){ //WRONG! input by user.
+                            for(int a = 0; a < 3; a++){
+                                ledstrippie.changegroupled(1,31,hwlib::color(255,0,0));
+                                ledstrippie.write(1);
+                                buzzer(1000, 300);
+                                showcolor(1,1,1,1, ledstrippie); //Show the correct colors
+                                buzzer(500, 600);
+                            }
+                            return;
+                        }
+                    }
+                }
+                beurt++;
+                ledstrippie.write(0);
+                hwlib::wait_ms(500);
+            }
+            ledstrippie.changegroupled(1,31,hwlib::color(0,255,0));
+            blink(ledstrippie, 200, 4);
+            hwlib::wait_ms(1500);
+            level++;
+        }
+    }
+}
+
+void menu(){
+    hwlib::cout << "===============================================================================================\n";
+    hwlib::cout << "RED: Play Advanced Simon says with levels!\n";
+    hwlib::cout << "GREEN: Play Normal Simon says\n";
+    hwlib::cout << "YELLOW: 2 Player Mode!!! (Recently added!)\n";
+    hwlib::cout << "When the correct color shows activate the bottom sensor to start that mode!\n";
+    hwlib::cout << "===============================================================================================\n";
+}
+
 /*======================================================
 The main function.
 The program will start and cycles through 3 colors.
@@ -341,28 +502,44 @@ int main(void){
     int duration = 30;
     int ledcount = 24;
     uint32_t srandinteger = 2147483647;
-    while(!(checkcolor(1, 4, ledstrip3))){
+    hwlib::cout << "========================================================================\n";
+    hwlib::cout << "Welkom bij Simon Says! Beweeg met je hand over de onderste Sensor!\n";
+    hwlib::cout << "========================================================================\n";
+    while(!(checkcolor(1, 4, ledstrip3, 0))){
         srandinteger--;
     }
     hwlib::wait_ms(400);
     srand(srandinteger);
-    for(;;){        
+    menu();
+    for(;;){       
         ledbegin.fillleds(hwlib::color(0,255,0), ledcount);
-        if(checkcolor(duration, 4, ledstrip3)){
+        if(checkcolor(duration, 4, ledstrip3, 0)){
+            hwlib::cout << "Your choice: Normal Simon Says\n";
             ledbegin.fillleds(hwlib::color(0,0,0), ledcount);
             hwlib::wait_ms(2000);
             normalsimon(ledstrip3);
+            menu();
         }
         ledbegin.fillleds(hwlib::color(255, 0 ,0), ledcount);
-        if(checkcolor(duration, 4, ledstrip3)){
+        if(checkcolor(duration, 4, ledstrip3, 0)){
+            hwlib::cout << "Your choice: Advanced Simon Says with levels!\n";
             ledbegin.fillleds(hwlib::color(0,0,0), ledcount);
             hwlib::wait_ms(2000);
             levels(ledstrip3);
             ledbegin.fillleds(hwlib::color(255,255,255), ledcount);
-            hwlib::wait_ms(2000);        
+            hwlib::wait_ms(2000);  
+            menu();      
         }
         ledbegin.fillleds(hwlib::color(255,128,0), ledcount);
-        if(checkcolor(duration, 4, ledstrip3)){break;}
+        if(checkcolor(duration, 4, ledstrip3, 0)){
+            hwlib::cout << "Your choice: Simon says multiplayer!\n";
+            ledbegin.fillleds(hwlib::color(0,0,0), ledcount);
+            hwlib::wait_ms(2000);
+            levelsMultiplayer(ledstrip3);
+            ledbegin.fillleds(hwlib::color(255,255,255), ledcount);
+            hwlib::wait_ms(2000);  
+            menu(); 
+        }
     }
     return 0;
 }

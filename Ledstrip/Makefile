@@ -17,7 +17,7 @@ HEADERS := ws2812.hpp
 # other places to look for files for this project
 SEARCH  := 
 
-# set RELATIVE to the next higher directory 
-# and defer to the appropriate Makefile.* there
-RELATIVE := ..
-include $(RELATIVE)/Makefile.due
+# set REATIVE to the next higher directory 
+# and defer to the Makefile.due there
+RELATIVE := $(RELATIVE)../
+include $(RELATIVE)Makefile.due
